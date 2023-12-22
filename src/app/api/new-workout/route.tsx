@@ -1,30 +1,25 @@
 import { NextResponse } from "next/server";
-import { NewWorkout, addNewWorkout } from "@/database/gym";
-import { getCurrentDate, getCurrentDateTime } from "@/utilities/date-utilities";
-
-export type RequestJson = {
-    date: Date
-    muscleGroup: number
-    workoutName: string
-    weight: number
-}
+import { newWorkout } from "@/database/gym";
+import { NewWorkoutType } from "@/app/lib/type-library";
 
 export async function POST(request: Request) {
 
-    const { date, muscleGroup, workoutName, weight } = await request.json() as RequestJson;
-
-    const dateTime = getCurrentDateTime(getCurrentDate());
-
-    const formData: NewWorkout = {
-        date,
-        dateTime,
-        muscleGroup,
+    const {
         workoutName,
-        weight,
+        maxWeight,
+        workoutDate,
+        muscleGroupId
+    } = await request.json() as NewWorkoutType;
+
+    const formData: NewWorkoutType = {
+        workoutName,
+        maxWeight,
+        workoutDate,
+        muscleGroupId
     };
 
     await Promise.all([
-        addNewWorkout(formData)
+        newWorkout(formData)
     ]);
 
     return NextResponse.json({

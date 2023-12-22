@@ -110,18 +110,24 @@ SET row_security = off;
 -- Data for Name: MuscleGroup; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO "public"."MuscleGroup" ("MuscleGroupId", "DateCreated", "DateUpdated", "Name") VALUES
+	(1, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Abs'),
+	(2, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Back'),
+	(3, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Biceps'),
+	(4, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Chest'),
+	(5, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Forearms'),
+	(6, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Legs'),
+	(7, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Shoulders'),
+	(8, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Triceps');
 
 
 --
 -- Data for Name: Workout; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-
-
---
--- Data for Name: WorkoutToMuscleGroup; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
+INSERT INTO "public"."Workout" ("WorkoutId", "DateCreated", "DateUpdated", "Name", "MaxWeight", "WorkoutDate", "MuscleGroupId") VALUES
+	(1, '2023-12-14 00:55:01.645835+00', '2023-12-14 00:55:01.645835+00', 'Back Extension', 85, '2023-12-14 00:55:01.645835+00', 2),
+	(3, '2023-12-14 00:56:24.219352+00', '2023-12-14 00:56:24.219352+00', 'Leg Press', 145, '2023-12-14 00:56:13+00', 6);
 
 
 --
@@ -160,21 +166,14 @@ SELECT pg_catalog.setval('"pgsodium"."key_key_id_seq"', 1, false);
 -- Name: MuscleGroup_MuscleGroupId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."MuscleGroup_MuscleGroupId_seq"', 1, false);
-
-
---
--- Name: WorkoutToMuscleGroup_WorkoutToMuscleGroupId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."WorkoutToMuscleGroup_WorkoutToMuscleGroupId_seq"', 1, false);
+SELECT pg_catalog.setval('"public"."MuscleGroup_MuscleGroupId_seq"', 8, true);
 
 
 --
 -- Name: Workout_WorkoutId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."Workout_WorkoutId_seq"', 1, false);
+SELECT pg_catalog.setval('"public"."Workout_WorkoutId_seq"', 3, true);
 
 
 --
