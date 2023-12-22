@@ -5,20 +5,17 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { getCurrentDateISOFormat } from "@/utilities/date-utilities";
-import { RequestJson } from "@/app/api/new-workout/route";
 import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import { CircularProgress } from "@mui/material/";
 import { Button } from "@material-tailwind/react";
-import { MuscleGroups } from "@/database/gym";
+
+import type { 
+    MuscleGroupType,
+    NewWorkoutType
+} from "@/app/lib/type-library";
 
 type SubmitState = "Idle" | "Success" | "Error";
-type FormInputs = {
-    date: Date
-    muscleGroup: number
-    workoutName: string
-    weight: number
-}
 
 type NewWorkoutModalProps = {
     onClose: () => void
@@ -30,37 +27,37 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
         register,
         handleSubmit,
         reset,
-    } = useForm<FormInputs>();
+    } = useForm<NewWorkoutType>();
 
     const [submitState, setSubmitState] = useState<SubmitState>("Idle");
     const [responseMessage, setResponseMessage] = useState<string>("");
     const [loadingState, setLoadingState] = useState<boolean>(false);
-    const [muscleGroups, setMuscleGroups] = useState<MuscleGroups[]>([]);
+    const [muscleGroups, setMuscleGroups] = useState<MuscleGroupType[]>([]);
 
     useEffect(() => {
-        axios.get("/api/gym/get-muscle-groups").then((response) => {
+        axios.get("/api/get-muscle-groups").then((response) => {
             setMuscleGroups(response.data);
         });
     }, []);
 
-    const onSubmit: SubmitHandler<FormInputs> = async (formData) => {
+    const onSubmit: SubmitHandler<NewWorkoutType> = async (formData) => {
         setSubmitState("Idle");
         setResponseMessage("");
         setLoadingState(true);
 
         try {
-            const { data } = await axios.post("/api/gym/new-workout", {
-                date: new Date(formData.date),
-                muscleGroup: +formData.muscleGroup,
+            const { data } = await axios.post("/api/new-workout", {
                 workoutName: formData.workoutName,
-                weight: +formData.weight,
-            } as RequestJson);
+                maxWeight: +formData.maxWeight,
+                workoutDate: new Date(formData.workoutDate),
+                muscleGroupId: +formData.muscleGroupId,
+            } as NewWorkoutType);
 
             setResponseMessage(data.message);
             setSubmitState("Success");
             reset({
                 workoutName: "",
-                weight: NaN,
+                maxWeight: NaN,
             });
         } catch (e) {
             setResponseMessage("Something went wrong. Please try again.");
@@ -114,12 +111,12 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
 
                                     <div>
                                         <label htmlFor="workoutDate" className="flex mb-2 font-medium text-sm text-white">Date</label>
-                                        <input {...register("date")} type="date" className="flex w-full p-2.5 rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400 outline-none border border-gray-500 focus:border-green-600" value={getCurrentDateISOFormat()} required />
+                                        <input {...register("workoutDate")} type="date" className="flex w-full p-2.5 rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400 outline-none border border-gray-500 focus:border-green-600" value={getCurrentDateISOFormat()} required />
                                     </div>
 
                                     <div>
-                                        <label htmlFor="muscleGroup" className="flex mb-2 font-medium text-sm text-white">Muscle Group</label>
-                                        <select {...register("muscleGroup")} className="flex w-full p-2.5 rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400 outline-none border border-gray-500 focus:border-green-600" required>
+                                        <label htmlFor="muscleGroupId" className="flex mb-2 font-medium text-sm text-white">Muscle Group</label>
+                                        <select {...register("muscleGroupId")} className="flex w-full p-2.5 rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400 outline-none border border-gray-500 focus:border-green-600" required>
                                             {muscleGroups.map((group) => (
                                                 <option key={group.MuscleGroupId} value={group.MuscleGroupId}>{group.Name}</option>
                                             ))}
@@ -132,10 +129,10 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                                     </div>
 
                                     <div>
-                                        <label htmlFor="weight" className="block mb-2 font-medium text-sm text-white">Weight</label>
+                                        <label htmlFor="maxWeight" className="block mb-2 font-medium text-sm text-white">Weight</label>
                                         <div className="group">
                                             <div className="flex w-full rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400">
-                                                <input {...register("weight")} type="number" className="flex items-center grow p-2.5 rounded-l-lg bg-gray-600 outline-none border-l border-y border-gray-500 peer focus:border-green-600" placeholder="120" required />
+                                                <input {...register("maxWeight")} type="number" className="flex items-center grow p-2.5 rounded-l-lg bg-gray-600 outline-none border-l border-y border-gray-500 peer focus:border-green-600" placeholder="120" required />
 
                                                 <span className="flex items-center whitespace-nowrap w-fit px-5 py-2.5 rounded-r-lg bg-gray-500 outline-none border-r border-y border-gray-500 peer-focus:border-green-600">lbs.</span>
                                             </div>
