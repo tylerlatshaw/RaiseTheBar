@@ -7,13 +7,13 @@ import {
 import { Card } from "@material-tailwind/react";
 import axios from "axios";
 import setWorkoutTableRow from "./workout-table-row";
-import { muscleGroupImages, workoutTableHeader } from "@/app/lib/workout-table-data";
+import { muscleGroupImages, workoutTableHeader } from "./../app/lib/workout-table-data";
 
 import type {
     MuscleGroupImageType,
     MuscleGroupType,
     WorkoutType
-} from "@/app/lib/type-library";
+} from "./../app/lib/type-library";
 
 export default function Page() {
 
@@ -45,11 +45,11 @@ export default function Page() {
 
     return <>
         <Card className="h-full w-full rounded">
-            <table className="w-full min-w-max table-auto text-left bg-white/75">
+            <table className="w-full table-auto text-center md:text-left text-wrap bg-white/75">
                 <thead>
                     <tr>
                         {workoutTableHeader.map((headerItme) => (
-                            <th key={headerItme} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                            <th key={headerItme} className="px-2 py-4 border-b border-blue-gray-100 bg-blue-gray-50">
                                 {headerItme}
                             </th>
                         ))}
@@ -58,7 +58,7 @@ export default function Page() {
                 <tbody>
                     {
                         workouts.map((workout) => (
-                            <tr key={workout.WorkoutId}>
+                            <tr key={workout.WorkoutId} className="px-2">
                                 {getWorkoutDetails(workout)}
                             </tr>
                         ))

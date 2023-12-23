@@ -4,7 +4,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { getCurrentDateISOFormat } from "@/utilities/date-utilities";
+import { getCurrentDateISOFormat } from "./../utilities/date-utilities";
 import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import { CircularProgress } from "@mui/material/";
@@ -13,7 +13,7 @@ import { Button } from "@material-tailwind/react";
 import type { 
     MuscleGroupType,
     NewWorkoutType
-} from "@/app/lib/type-library";
+} from "./../app/lib/type-library";
 
 type SubmitState = "Idle" | "Success" | "Error";
 
