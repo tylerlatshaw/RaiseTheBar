@@ -1,5 +1,5 @@
-import SpeedDial from "@/components/speed-dial";
-import WorkoutTable from "@/components/workout-table";
+import SpeedDial from "./../components/speed-dial";
+import WorkoutTable from "./../components/workout-table";
 
 export default function Page() {
     return <>

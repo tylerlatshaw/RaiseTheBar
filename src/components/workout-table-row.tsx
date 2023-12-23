@@ -6,7 +6,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import type {
     MuscleGroupImageType,
     WorkoutType
-} from "@/app/lib/type-library";
+} from "./../app/lib/type-library";
 
 export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData: MuscleGroupImageType) {
 
