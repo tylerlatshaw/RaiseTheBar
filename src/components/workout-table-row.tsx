@@ -27,9 +27,11 @@ export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData
     return <>
         {
             <>
-                <td className="p-2 border-b border-blue-gray-50 leading-none">
-                    <Avatar src={MuscleGroupImage} className="h-12 w-12 ml-2 mr-3 shadow-md rounded-full" />
-                    {MuscleGroupName}
+                <td className="flex flex-col md:flex-row items-center p-2 border-b border-blue-gray-50 leading-none">
+                    <Avatar src={MuscleGroupImage} className="h-12 w-12 mx-1 shadow-md rounded-full" />
+                    <span className="mx-2">
+                        {MuscleGroupName}
+                    </span>
                 </td>
                 <td className="p-2 border-b border-blue-gray-50 leading-none">
                     {Name}

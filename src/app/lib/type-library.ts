@@ -1,3 +1,17 @@
+import { SvgIconTypeMap } from "@mui/material";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
+
+export type IconLookupType = {
+    display: string
+    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>
+}
+
+export type FooterSocialType = {
+    display: string,
+    link: string,
+    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>
+}
+
 export type MuscleGroupType = {
     MuscleGroupId: number,
     Name: string
@@ -8,7 +22,15 @@ export type MuscleGroupImageType = {
     MuscleGroupImage: string
 }
 
-export type NewWorkoutType= {
+export type NavigationLinkType = {
+    display: string,
+    link: string,
+    filepath: string,
+    changeFrequency: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never",
+    priority: number
+}
+
+export type NewWorkoutType = {
     workoutName: string,
     maxWeight: number,
     workoutDate: Date,
