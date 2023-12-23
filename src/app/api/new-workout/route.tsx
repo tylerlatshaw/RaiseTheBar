@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { newWorkout } from "@/database/gym";
-import { NewWorkoutType } from "@/app/lib/type-library";
+import { newWorkout } from "../../../database/gym";
+
+import type { NewWorkoutType } from "../../lib/type-library";
 
 export async function POST(request: Request) {
 
