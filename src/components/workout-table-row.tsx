@@ -1,17 +1,15 @@
 "use client";
 
-import { Avatar } from "@material-tailwind/react";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-
-import type {
+import {
     MuscleGroupImageType,
     WorkoutType
 } from "./../app/lib/type-library";
+import { Avatar } from "@material-tailwind/react";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
-export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData: MuscleGroupImageType) {
+export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData: MuscleGroupImageType, workoutName: string) {
 
     const {
-        Name,
         MaxWeight,
         WorkoutDate,
     } = workout;
@@ -34,7 +32,7 @@ export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData
                     </span>
                 </td>
                 <td className="p-2 border-b border-blue-gray-50 leading-none">
-                    {Name}
+                    {workoutName}
                 </td>
                 <td className="p-2 border-b border-blue-gray-50 leading-none">
                     <span className="flex flex-col leading-normal">

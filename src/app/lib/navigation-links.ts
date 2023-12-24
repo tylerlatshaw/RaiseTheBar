@@ -1,11 +1,10 @@
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-
-import type { 
+import { 
     IconLookupType, 
     NavigationLinkType 
 } from "./type-library";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 export const navigationLinks: NavigationLinkType[] = [
     {

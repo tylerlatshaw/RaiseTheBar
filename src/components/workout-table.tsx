@@ -12,17 +12,23 @@ import { muscleGroupImages, workoutTableHeader } from "./../app/lib/workout-tabl
 import type {
     MuscleGroupImageType,
     MuscleGroupType,
+    WorkoutNameType,
     WorkoutType
 } from "./../app/lib/type-library";
 
 export default function Page() {
 
     const [muscleGroups, setMuscleGroups] = useState<MuscleGroupType[]>([]);
+    const [workoutNames, setWorkoutNames] = useState<WorkoutNameType[]>([]);
     const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
 
     useEffect(() => {
         axios.get("/api/get-muscle-groups").then((response) => {
             setMuscleGroups(response.data);
+        });
+
+        axios.get("/api/get-workout-names").then((response) => {
+            setWorkoutNames(response.data);
         });
 
         axios.get("/api/get-workouts").then((response) => {
@@ -40,7 +46,9 @@ export default function Page() {
     function getWorkoutDetails(workout: WorkoutType) {
         const muscleGroupData: MuscleGroupImageType = getMuscleGroupInformation(workout.MuscleGroupId);
 
-        return setWorkoutTableRow(workout, muscleGroupData);
+        const workoutName = workoutNames.find((e) => e.WorkoutNameId === workout.WorkoutNameId)?.Name!;
+
+        return setWorkoutTableRow(workout, muscleGroupData, workoutName);
     }
 
     return <>
@@ -48,9 +56,9 @@ export default function Page() {
             <table className="w-full table-auto text-center md:text-left text-wrap bg-white/75">
                 <thead>
                     <tr>
-                        {workoutTableHeader.map((headerItme) => (
-                            <th key={headerItme} className="px-2 py-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                                {headerItme}
+                        {workoutTableHeader.map((headerItem) => (
+                            <th key={headerItem} className="px-2 py-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                                {headerItem}
                             </th>
                         ))}
                     </tr>

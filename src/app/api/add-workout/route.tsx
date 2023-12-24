@@ -1,19 +1,18 @@
 import { NextResponse } from "next/server";
 import { newWorkout } from "../../../database/gym";
-
-import type { NewWorkoutType } from "../../lib/type-library";
+import { NewWorkoutType } from "../../lib/type-library";
 
 export async function POST(request: Request) {
 
     const {
-        workoutName,
+        workoutNameId,
         maxWeight,
         workoutDate,
         muscleGroupId
     } = await request.json() as NewWorkoutType;
 
     const formData: NewWorkoutType = {
-        workoutName,
+        workoutNameId,
         maxWeight,
         workoutDate,
         muscleGroupId
@@ -25,6 +24,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
         status: "Ok",
-        message: workoutName + " added successfully!",
+        message: "New Workout Added"
     });
 }
