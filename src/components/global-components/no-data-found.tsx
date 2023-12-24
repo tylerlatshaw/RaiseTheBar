@@ -7,7 +7,7 @@ export default function NoDataFound(modifier: string) {
                 <div>
                     <FolderOffOutlinedIcon className="text-6xl"/>
                 </div>
-                <div className="pt-2 text-xl font-semibold">
+                <div className="pt-2 text-base font-semibold">
                     No {modifier} Found
                 </div>
             </div>

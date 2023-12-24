@@ -1,21 +1,43 @@
 "use client";
 
+import {
+    MuscleGroupType,
+    NewWorkoutNameType,
+    NewWorkoutType,
+    WorkoutNameType
+} from "./../app/lib/type-library";
+import {
+    DropdownItemType,
+    dropdownStyles,
+    inputStyles,
+    labelStyles
+} from "./dropdown-configuration";
+import { getCurrentDateISOFormat } from "./../utilities/date-utilities";
+import noDataFound from "./global-components/no-data-found";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { getCurrentDateISOFormat } from "./../utilities/date-utilities";
+import {
+    Controller,
+    SubmitHandler,
+    useForm
+} from "react-hook-form";
+import Select from "react-select";
+import { components } from "react-select";
+import CreatableSelect from "react-select/creatable";
 import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import { CircularProgress } from "@mui/material/";
 import { Button } from "@material-tailwind/react";
 
-import type { 
-    MuscleGroupType,
-    NewWorkoutType
-} from "./../app/lib/type-library";
-
 type SubmitState = "Idle" | "Success" | "Error";
+
+type FormInputs = {
+    workout: DropdownItemType,
+    maxWeight: number,
+    workoutDate: Date,
+    muscleGroup: DropdownItemType
+};
 
 type NewWorkoutModalProps = {
     onClose: () => void
@@ -26,37 +48,64 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
     const {
         register,
         handleSubmit,
-        reset,
-    } = useForm<NewWorkoutType>();
+        control,
+        reset
+    } = useForm<FormInputs>();
 
     const [submitState, setSubmitState] = useState<SubmitState>("Idle");
     const [responseMessage, setResponseMessage] = useState<string>("");
     const [loadingState, setLoadingState] = useState<boolean>(false);
     const [muscleGroups, setMuscleGroups] = useState<MuscleGroupType[]>([]);
+    const [workoutNames, setWorkoutNames] = useState<WorkoutNameType[]>([]);
+
+    const muscleGroupOptions: DropdownItemType[] = muscleGroups.map((value) => ({
+        value: value.MuscleGroupId,
+        label: value.Name
+    }));
+
+    const workoutNameOptions: DropdownItemType[] = workoutNames.map((value) => ({
+        value: value.WorkoutNameId,
+        label: value.Name
+    }));
 
     useEffect(() => {
         axios.get("/api/get-muscle-groups").then((response) => {
             setMuscleGroups(response.data);
         });
+
+        axios.get("/api/get-workout-names").then((response) => {
+            setWorkoutNames(response.data);
+        });
     }, []);
 
-    const onSubmit: SubmitHandler<NewWorkoutType> = async (formData) => {
+    const onSubmit: SubmitHandler<FormInputs> = async (formData) => {
         setSubmitState("Idle");
         setResponseMessage("");
         setLoadingState(true);
 
         try {
-            const { data } = await axios.post("/api/new-workout", {
-                workoutName: formData.workoutName,
+            let workoutId: number;
+
+            if (isNaN(+formData.workout.value!)) {
+                const { data } = await axios.post("/api/add-workout-name", {
+                    name: formData.workout.label
+                } as NewWorkoutNameType);
+                workoutId = +data.message[0].WorkoutNameId;
+            } else {
+                workoutId = +formData.workout.value!;
+            }
+
+            const { data } = await axios.post("/api/add-workout", {
+                workoutNameId: workoutId,
                 maxWeight: +formData.maxWeight,
                 workoutDate: new Date(formData.workoutDate),
-                muscleGroupId: +formData.muscleGroupId,
+                muscleGroupId: +formData.muscleGroup.value!
             } as NewWorkoutType);
 
             setResponseMessage(data.message);
             setSubmitState("Success");
             reset({
-                workoutName: "",
+                workout: undefined,
                 maxWeight: NaN,
             });
         } catch (e) {
@@ -89,8 +138,8 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
 
     return (
         <>
-            <div className="fixed top-0 left-0 right-0 flex items-center w-screen h-screen bg-gray-300/60">
-                <div className="flex items-center w-full">
+            <div className="fixed top-0 left-0 right-0 flex items-center w-screen h-screen bg-gray-300/60 z-40">
+                <div className="flex items-center w-full m-2">
                     <div className="z-50 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mx-auto shadow-lg shadow-black rounded-lg bg-gray-700">
                         <div className="relative max-h-full rounded-lg">
 
@@ -102,39 +151,65 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                                         <CloseIcon />
                                     </button>
                                     <div className="px-6 py-5 lg:px-8">
-                                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">Add New Workout</h3>
+                                        <h3 className="text-xl font-medium text-white">Add New Workout</h3>
                                     </div>
                                 </div>
 
                                 {/* Modal Body*/}
-                                <div className="px-6 py-6 lg:px-8 space-y-6">
+                                <div className="px-4 py-6 lg:px-6 space-y-6">
 
-                                    <div>
-                                        <label htmlFor="workoutDate" className="flex mb-2 font-medium text-sm text-white">Date</label>
-                                        <input {...register("workoutDate")} type="date" className="flex w-full p-2.5 rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400 outline-none border border-gray-500 focus:border-green-600" value={getCurrentDateISOFormat()} required />
+                                    <div className="w-full">
+                                        <label htmlFor="workoutDate" className={labelStyles}>
+                                            Date
+                                        </label>
+                                        <input {...register("workoutDate")} type="date" className={inputStyles} value={getCurrentDateISOFormat()} required />
                                     </div>
 
-                                    <div>
-                                        <label htmlFor="muscleGroupId" className="flex mb-2 font-medium text-sm text-white">Muscle Group</label>
-                                        <select {...register("muscleGroupId")} className="flex w-full p-2.5 rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400 outline-none border border-gray-500 focus:border-green-600" required>
-                                            {muscleGroups.map((group) => (
-                                                <option key={group.MuscleGroupId} value={group.MuscleGroupId}>{group.Name}</option>
-                                            ))}
-                                        </select>
+                                    <div className="w-full">
+                                        <label htmlFor="muscleGroup" className={labelStyles}>
+                                            Muscle Group
+                                        </label>
+                                        <Controller name="muscleGroup" control={control} rules={{ required: true }} render={({ field }) =>
+                                            <Select {...field}
+                                                isClearable={false}
+                                                isMulti={false}
+                                                isLoading={loadingState}
+                                                options={loadingState ? [] : muscleGroupOptions}
+                                                noOptionsMessage={() => noDataFound("Muscle Groups")}
+                                                styles={dropdownStyles}
+                                                components={{ Input: props => <components.Input {...props} maxLength={50} /> }}
+                                                required
+                                            />
+                                        } />
                                     </div>
 
-                                    <div>
-                                        <label htmlFor="workoutName" className="flex mb-2 font-medium text-sm text-white">Workout Name</label>
-                                        <input {...register("workoutName")} type="text" className="flex w-full p-2.5 rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400 outline-none border border-gray-500 focus:border-green-600" placeholder="Leg Press" required />
+                                    <div className="w-full">
+                                        <label htmlFor="workout" className={labelStyles}>
+                                            Workout
+                                        </label>
+                                        <Controller name="workout" control={control} rules={{ required: true }} render={({ field }) =>
+                                            <CreatableSelect {...field}
+                                                isClearable={false}
+                                                isMulti={false}
+                                                isLoading={loadingState}
+                                                options={loadingState ? [] : workoutNameOptions}
+                                                noOptionsMessage={() => noDataFound("Workouts")}
+                                                styles={dropdownStyles}
+                                                components={{ Input: props => <components.Input {...props} maxLength={50} /> }}
+                                                required
+                                            />
+                                        } />
                                     </div>
 
-                                    <div>
-                                        <label htmlFor="maxWeight" className="block mb-2 font-medium text-sm text-white">Weight</label>
+                                    <div className="w-full">
+                                        <label htmlFor="maxWeight" className={labelStyles}>
+                                            Weight
+                                        </label>
                                         <div className="group">
                                             <div className="flex w-full rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400">
-                                                <input {...register("maxWeight")} type="number" className="flex items-center grow p-2.5 rounded-l-lg bg-gray-600 outline-none border-l border-y border-gray-500 peer focus:border-green-600" placeholder="120" required />
+                                                <input {...register("maxWeight")} type="number" className={inputStyles + " rounded-r-none"} placeholder="120" required />
 
-                                                <span className="flex items-center whitespace-nowrap w-fit px-5 py-2.5 rounded-r-lg bg-gray-500 outline-none border-r border-y border-gray-500 peer-focus:border-green-600">lbs.</span>
+                                                <span className="flex items-center whitespace-nowrap w-fit px-5 py-2.5 rounded-r-lg bg-gray-500 outline-none border-r border-y border-gray-500 peer-focus:border-sky-600">lbs.</span>
                                             </div>
                                         </div>
                                     </div>
@@ -144,7 +219,7 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                                 {/* Modal Footer*/}
                                 <div className="border-t-[1px] border-gray-500">
                                     <div className="px-6 py-4 lg:px-8 flex flex-row-reverse">
-                                        <Button type="submit" className=" text-white bg-green-700 hover:bg-green-800 focus:ring-2 focus:outline-none focus:ring-green-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled={loadingState}>
+                                        <Button type="submit" className=" text-white bg-sky-600 hover:bg-sky-700 focus:ring-2 focus:outline-none focus:ring-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled={loadingState}>
                                             <span className="flex items-center">
                                                 {loadingState ? <>Submit&nbsp;<CircularProgress size={16} sx={{ color: "white" }} /></> : <>Submit&nbsp;<SendIcon className="text-lg flex items-center" /></>}
                                             </span>

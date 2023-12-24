@@ -1,6 +1,5 @@
 import { supabase } from "./../utilities/supabase";
-
-import type { NewWorkoutType } from "./../app/lib/type-library";
+import { NewWorkoutNameType, NewWorkoutType } from "./../app/lib/type-library";
 
 export async function getMuscleGroups() {
     const { data } = await supabase
@@ -11,18 +10,27 @@ export async function getMuscleGroups() {
     return data;
 }
 
+export async function getWorkoutNames() {
+    const { data } = await supabase
+        .from("WorkoutNames")
+        .select("WorkoutNameId, Name")
+        .order("Name");
+
+    return data;
+}
+
 export async function getWorkouts() {
     const { data } = await supabase
         .from("Workout")
-        .select("WorkoutId, Name, MaxWeight, WorkoutDate, MuscleGroupId")
-        .order("Name");
+        .select("WorkoutId, WorkoutNameId, MaxWeight, WorkoutDate, MuscleGroupId")
+        .order("WorkoutDate");
 
     return data;
 }
 
 export async function newWorkout(formData: NewWorkoutType) {
     const {
-        workoutName,
+        workoutNameId,
         maxWeight,
         workoutDate,
         muscleGroupId
@@ -31,11 +39,28 @@ export async function newWorkout(formData: NewWorkoutType) {
     const { data } = await supabase
         .from("Workout")
         .insert({
-            Name: workoutName,
+            WorkoutNameId: workoutNameId,
             MaxWeight: maxWeight,
             WorkoutDate: workoutDate,
             MuscleGroupId: muscleGroupId
-        });
+        })
+        .select();
+
+    return data;
+}
+
+export async function newWorkoutName(formData: NewWorkoutNameType) {
+    const {
+        name
+    } = formData;
+
+    const { data } = await supabase
+        .from("WorkoutNames")
+        .insert({
+            Name: name
+        })
+        .limit(1)
+        .select();
 
     return data;
 }

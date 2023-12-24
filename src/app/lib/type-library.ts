@@ -30,16 +30,25 @@ export type NavigationLinkType = {
     priority: number
 }
 
+export type NewWorkoutNameType = {
+    name: string
+}
+
 export type NewWorkoutType = {
-    workoutName: string,
+    workoutNameId: number,
     maxWeight: number,
     workoutDate: Date,
     muscleGroupId: number
 }
 
+export type WorkoutNameType = {
+    WorkoutNameId: number,
+    Name: string
+}
+
 export type WorkoutType = {
     WorkoutId: number,
-    Name: string,
+    WorkoutNameId: number,
     MaxWeight: number,
     WorkoutDate: Date,
     MuscleGroupId: number
