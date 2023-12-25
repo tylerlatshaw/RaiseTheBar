@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getMuscleGroups } from "../../../database/gym";
+import { getMuscleGroups } from "../../../database/database-functions";
 
 export async function GET() {
 

@@ -3,6 +3,7 @@ import { CSSObjectWithLabel } from "react-select";
 export type DropdownItemType = {
     value: number | undefined,
     label: string | undefined,
+    image: string | undefined | null
 }
 
 export const inputStyles = "flex w-full p-2.5 rounded-lg bg-gray-600 text-sm text-white placeholder-gray-400 outline-none border border-gray-500 focus:border-sky-600";

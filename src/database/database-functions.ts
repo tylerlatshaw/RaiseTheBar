@@ -1,5 +1,5 @@
-import { supabase } from "./../utilities/supabase";
-import { NewWorkoutNameType, NewWorkoutType } from "./../app/lib/type-library";
+import { supabase } from "../utilities/supabase";
+import { NewWorkoutNameType, NewWorkoutType } from "../app/lib/type-library";
 
 export async function getMuscleGroups() {
     const { data } = await supabase

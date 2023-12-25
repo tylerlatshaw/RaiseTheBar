@@ -3,7 +3,7 @@
 import {
     MuscleGroupImageType,
     WorkoutType
-} from "./../app/lib/type-library";
+} from "../../app/lib/type-library";
 import { Avatar } from "@material-tailwind/react";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
@@ -20,7 +20,7 @@ export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData
     } = muscleGroupData;
 
     const newDate = new Date(WorkoutDate);
-    const formattedDate = newDate.getMonth() + "/" + newDate.getDate() + "/" + newDate.getFullYear();
+    const formattedDate = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).format(newDate);
 
     return <>
         {
@@ -35,8 +35,8 @@ export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData
                     {workoutName}
                 </td>
                 <td className="p-2 border-b border-blue-gray-50 leading-none">
-                    <span className="flex flex-col leading-normal">
-                        {MaxWeight} lbs. <br />
+                    <span className="flex flex-col md:flex-row items-center leading-normal">
+                        {MaxWeight} lbs. 
                         <span className="positive-response font-bold text-xs">
                             <ArrowDropUpIcon className="text-base" />15
                         </span>

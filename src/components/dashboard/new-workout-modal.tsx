@@ -5,15 +5,14 @@ import {
     NewWorkoutNameType,
     NewWorkoutType,
     WorkoutNameType
-} from "./../app/lib/type-library";
+} from "../../app/lib/type-library";
 import {
     DropdownItemType,
     dropdownStyles,
     inputStyles,
     labelStyles
 } from "./dropdown-configuration";
-import { getCurrentDateISOFormat } from "./../utilities/date-utilities";
-import noDataFound from "./global-components/no-data-found";
+import noDataFound from "../global-components/no-data-found";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -29,6 +28,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import { CircularProgress } from "@mui/material/";
 import { Button } from "@material-tailwind/react";
+import { Avatar } from "@material-tailwind/react";
+import { muscleGroupImages } from "@/app/lib/dashboard-data";
 
 type SubmitState = "Idle" | "Success" | "Error";
 
@@ -60,12 +61,14 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
 
     const muscleGroupOptions: DropdownItemType[] = muscleGroups.map((value) => ({
         value: value.MuscleGroupId,
-        label: value.Name
+        label: value.Name,
+        image: muscleGroupImages.find(muscleGroups => muscleGroups.muscleGroup === value.Name)?.url ?? "/static/chest.png"
     }));
 
     const workoutNameOptions: DropdownItemType[] = workoutNames.map((value) => ({
         value: value.WorkoutNameId,
-        label: value.Name
+        label: value.Name,
+        image: null
     }));
 
     useEffect(() => {
@@ -136,11 +139,21 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
         onClose();
     }
 
+    function getDateTime() {
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+
+        return now.toISOString().slice(0, -1);
+    }
+
     return (
         <>
             <div className="fixed top-0 left-0 right-0 flex items-center w-screen h-screen bg-gray-300/60 z-40">
                 <div className="flex items-center w-full m-2">
-                    <div className="z-50 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mx-auto shadow-lg shadow-black rounded-lg bg-gray-700">
+                    <div className="z-50 w-full sm:w-1/2 md:w-1/3 mx-auto shadow-lg shadow-black rounded-lg bg-gray-700">
                         <div className="relative max-h-full rounded-lg">
 
                             <form method="POST" onSubmit={handleSubmit(onSubmit)}>
@@ -162,7 +175,7 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                                         <label htmlFor="workoutDate" className={labelStyles}>
                                             Date
                                         </label>
-                                        <input {...register("workoutDate")} type="date" className={inputStyles} value={getCurrentDateISOFormat()} required />
+                                        <input {...register("workoutDate")} type="datetime-local" className={inputStyles} value={getDateTime()} required />
                                     </div>
 
                                     <div className="w-full">
@@ -179,6 +192,12 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                                                 styles={dropdownStyles}
                                                 components={{ Input: props => <components.Input {...props} maxLength={50} /> }}
                                                 required
+                                                formatOptionLabel={item => (
+                                                    <div className="flex flex-row items-center">
+                                                        <Avatar src={item.image!} className="h-8 w-8 mr-2 shadow-md rounded-full" />
+                                                        <span>{item.label}</span>
+                                                    </div>
+                                                )}
                                             />
                                         } />
                                     </div>

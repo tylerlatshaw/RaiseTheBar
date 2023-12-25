@@ -7,14 +7,14 @@ import {
 import { Card } from "@material-tailwind/react";
 import axios from "axios";
 import setWorkoutTableRow from "./workout-table-row";
-import { muscleGroupImages, workoutTableHeader } from "./../app/lib/workout-table-data";
+import { muscleGroupImages, workoutTableHeader } from "../../app/lib/dashboard-data";
 
 import type {
     MuscleGroupImageType,
     MuscleGroupType,
     WorkoutNameType,
     WorkoutType
-} from "./../app/lib/type-library";
+} from "../../app/lib/type-library";
 
 export default function Page() {
 
@@ -52,7 +52,7 @@ export default function Page() {
     }
 
     return <>
-        <Card className="h-full w-full rounded">
+        <Card className="h-full w-full rounded-lg">
             <table className="w-full table-auto text-center md:text-left text-wrap bg-white/75">
                 <thead>
                     <tr>

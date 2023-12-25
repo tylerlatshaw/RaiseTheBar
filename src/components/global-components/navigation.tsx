@@ -29,7 +29,7 @@ export default function Navigation() {
     }
 
     const desktopMenuList = navigationLinks.map((menuItem) =>
-        <Link key={menuItem.display} href={menuItem.link} className={"pt-4 pb-3 px-2 no-underline hover:text-sky-600 border-b-[6px] hover:border-sky-600 text-center" + (menuItem.link === pathname ? " border-sky-600 text-sky-600" : " border-transparent")}>
+        <Link key={menuItem.display} href={menuItem.link} className={"font-medium pt-4 pb-3 px-2 no-underline hover:text-sky-600 border-b-[6px] hover:border-sky-600 text-center" + (menuItem.link === pathname ? " border-sky-600 text-sky-600" : " border-transparent")}>
             {menuItem.display}
         </Link>
     );
