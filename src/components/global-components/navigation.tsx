@@ -72,7 +72,7 @@ export default function Navigation() {
                             <div className="m-auto">
                                 <a className="flex items-center no-underline hover:no-underline font-bold text-2xl lg:text-3xl" href="/">
                                     {/* <span className="py-1">Weight Lifting Tracker</span> */}
-                                    <Image src={"/static/raise-the-bar-logo.svg"} height={50} width={338} className="drop-shadow" alt="logo"/>
+                                    <Image src={"/static/raise-the-bar-logo.svg"} height={50} width={338} className="drop-shadow" alt="logo" priority={true} />
                                 </a>
                             </div>
                         </div>

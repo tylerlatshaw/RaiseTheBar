@@ -23,7 +23,7 @@ export async function getWorkouts() {
     const { data } = await supabase
         .from("Workout")
         .select("WorkoutId, WorkoutNameId, MaxWeight, WorkoutDate, MuscleGroupId")
-        .order("WorkoutDate");
+        .order("WorkoutDate", { ascending: false });
 
     return data;
 }

@@ -4,7 +4,8 @@ import {
     MuscleGroupType,
     NewWorkoutNameType,
     NewWorkoutType,
-    WorkoutNameType
+    WorkoutNameType,
+    WorkoutType
 } from "../../app/lib/type-library";
 import {
     DropdownItemType,
@@ -50,7 +51,8 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
         register,
         handleSubmit,
         control,
-        reset
+        reset,
+        setValue
     } = useForm<FormInputs>();
 
     const [submitState, setSubmitState] = useState<SubmitState>("Idle");
@@ -58,6 +60,7 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
     const [loadingState, setLoadingState] = useState<boolean>(false);
     const [muscleGroups, setMuscleGroups] = useState<MuscleGroupType[]>([]);
     const [workoutNames, setWorkoutNames] = useState<WorkoutNameType[]>([]);
+    const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
 
     const muscleGroupOptions: DropdownItemType[] = muscleGroups.map((value) => ({
         value: value.MuscleGroupId,
@@ -79,6 +82,10 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
         axios.get("/api/get-workout-names").then((response) => {
             setWorkoutNames(response.data);
         });
+
+        axios.get("/api/get-recent-workouts").then((response) => {
+            setWorkouts(response.data);
+        });
     }, []);
 
     const onSubmit: SubmitHandler<FormInputs> = async (formData) => {
@@ -98,14 +105,14 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                 workoutId = +formData.workout.value!;
             }
 
-            const { data } = await axios.post("/api/add-workout", {
+            await axios.post("/api/add-workout", {
                 workoutNameId: workoutId,
                 maxWeight: +formData.maxWeight,
                 workoutDate: new Date(formData.workoutDate),
                 muscleGroupId: +formData.muscleGroup.value!
             } as NewWorkoutType);
 
-            setResponseMessage(data.message);
+            setResponseMessage(formData.workout.label! + " Successfully Added");
             setSubmitState("Success");
             reset({
                 workout: undefined,
@@ -149,6 +156,12 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
         return now.toISOString().slice(0, -1);
     }
 
+    function setMuscleGroupSelect(workoutId: number) {
+        const workoutData: WorkoutType = workouts.find(workout => workout.WorkoutNameId === workoutId)!;
+        const muscleGroup: DropdownItemType = muscleGroupOptions.find(group => group.value === workoutData.MuscleGroupId)!;
+        setValue("muscleGroup", muscleGroup);
+    }
+
     return (
         <>
             <div className="fixed top-0 left-0 right-0 flex items-center w-screen h-screen bg-gray-300/60 z-40">
@@ -179,6 +192,25 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                                     </div>
 
                                     <div className="w-full">
+                                        <label htmlFor="workout" className={labelStyles}>
+                                            Workout
+                                        </label>
+                                        <Controller name="workout" control={control} rules={{ required: true }} render={({ field }) =>
+                                            <CreatableSelect {...field}
+                                                isClearable={false}
+                                                isMulti={false}
+                                                isLoading={loadingState}
+                                                options={loadingState ? [] : workoutNameOptions}
+                                                noOptionsMessage={() => noDataFound("Workouts")}
+                                                styles={dropdownStyles}
+                                                components={{ Input: props => <components.Input {...props} maxLength={50} /> }}
+                                                required
+                                                onChange={e => !isNaN(e?.value!) ? (setMuscleGroupSelect(e?.value!), setValue("workout", e!)) : setValue("workout", e!)}
+                                            />
+                                        } />
+                                    </div>
+
+                                    <div className="w-full">
                                         <label htmlFor="muscleGroup" className={labelStyles}>
                                             Muscle Group
                                         </label>
@@ -198,24 +230,6 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                                                         <span>{item.label}</span>
                                                     </div>
                                                 )}
-                                            />
-                                        } />
-                                    </div>
-
-                                    <div className="w-full">
-                                        <label htmlFor="workout" className={labelStyles}>
-                                            Workout
-                                        </label>
-                                        <Controller name="workout" control={control} rules={{ required: true }} render={({ field }) =>
-                                            <CreatableSelect {...field}
-                                                isClearable={false}
-                                                isMulti={false}
-                                                isLoading={loadingState}
-                                                options={loadingState ? [] : workoutNameOptions}
-                                                noOptionsMessage={() => noDataFound("Workouts")}
-                                                styles={dropdownStyles}
-                                                components={{ Input: props => <components.Input {...props} maxLength={50} /> }}
-                                                required
                                             />
                                         } />
                                     </div>
