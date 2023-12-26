@@ -318,7 +318,7 @@ h2 {
   text-decoration-line: underline;
 
   /* decoration-yellow-500 */
-  text-decoration-color: var(--sky-400);
+  text-decoration-color: var(--sky-600);
 }
 
 /* screen width < md */
@@ -421,4 +421,37 @@ div[data-lastpass-icon-root] {
 
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   color-scheme: dark;
+}
+
+
+/*******************************/
+/*****
+/*****    MY ACCOUNT / DEVELOPER 
+/*****
+/*******************************/
+
+.cli-commands table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cli-commands th {
+  border: solid 1px black;
+  padding: 4px 8px;
+  background-color: var(--sky-300);
+}
+
+.cli-commands td {
+  border: solid 1px black;
+  padding: 4px 8px;
+}
+
+.cli-commands code {
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--red-700);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: solid 1px var(--gray-200);
+  background-color: var(--gray-100);
+  font-weight: 600;
 }
