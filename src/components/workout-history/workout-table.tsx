@@ -7,14 +7,14 @@ import {
 import { Card } from "@material-tailwind/react";
 import axios from "axios";
 import setWorkoutTableRow from "./workout-table-row";
-import { muscleGroupImages, workoutTableHeader } from "./../app/lib/workout-table-data";
+import { muscleGroupImages, workoutTableHeader } from "../../app/lib/workout-history-data";
 
 import type {
     MuscleGroupImageType,
     MuscleGroupType,
     WorkoutNameType,
     WorkoutType
-} from "./../app/lib/type-library";
+} from "../../app/lib/type-library";
 
 export default function Page() {
 

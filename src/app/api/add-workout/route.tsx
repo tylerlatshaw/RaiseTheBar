@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { newWorkout } from "../../../database/gym";
+import { newWorkout } from "../../../database/database-functions";
 import { NewWorkoutType } from "../../lib/type-library";
 
 export async function POST(request: Request) {

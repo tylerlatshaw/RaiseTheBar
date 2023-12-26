@@ -4,16 +4,16 @@ import {
     MuscleGroupType,
     NewWorkoutNameType,
     NewWorkoutType,
-    WorkoutNameType
-} from "./../app/lib/type-library";
+    WorkoutNameType,
+    WorkoutType
+} from "../../app/lib/type-library";
 import {
     DropdownItemType,
     dropdownStyles,
     inputStyles,
     labelStyles
 } from "./dropdown-configuration";
-import { getCurrentDateISOFormat } from "./../utilities/date-utilities";
-import noDataFound from "./global-components/no-data-found";
+import noDataFound from "../global-components/no-data-found";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
@@ -29,6 +29,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import { CircularProgress } from "@mui/material/";
 import { Button } from "@material-tailwind/react";
+import { Avatar } from "@material-tailwind/react";
+import { muscleGroupImages } from "@/app/lib/dashboard-data";
 
 type SubmitState = "Idle" | "Success" | "Error";
 
@@ -49,7 +51,8 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
         register,
         handleSubmit,
         control,
-        reset
+        reset,
+        setValue
     } = useForm<FormInputs>();
 
     const [submitState, setSubmitState] = useState<SubmitState>("Idle");
@@ -57,15 +60,18 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
     const [loadingState, setLoadingState] = useState<boolean>(false);
     const [muscleGroups, setMuscleGroups] = useState<MuscleGroupType[]>([]);
     const [workoutNames, setWorkoutNames] = useState<WorkoutNameType[]>([]);
+    const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
 
     const muscleGroupOptions: DropdownItemType[] = muscleGroups.map((value) => ({
         value: value.MuscleGroupId,
-        label: value.Name
+        label: value.Name,
+        image: muscleGroupImages.find(muscleGroups => muscleGroups.muscleGroup === value.Name)?.url ?? "/static/chest.png"
     }));
 
     const workoutNameOptions: DropdownItemType[] = workoutNames.map((value) => ({
         value: value.WorkoutNameId,
-        label: value.Name
+        label: value.Name,
+        image: null
     }));
 
     useEffect(() => {
@@ -75,6 +81,10 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
 
         axios.get("/api/get-workout-names").then((response) => {
             setWorkoutNames(response.data);
+        });
+
+        axios.get("/api/get-recent-workouts").then((response) => {
+            setWorkouts(response.data);
         });
     }, []);
 
@@ -95,14 +105,14 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                 workoutId = +formData.workout.value!;
             }
 
-            const { data } = await axios.post("/api/add-workout", {
+            await axios.post("/api/add-workout", {
                 workoutNameId: workoutId,
                 maxWeight: +formData.maxWeight,
                 workoutDate: new Date(formData.workoutDate),
                 muscleGroupId: +formData.muscleGroup.value!
             } as NewWorkoutType);
 
-            setResponseMessage(data.message);
+            setResponseMessage(formData.workout.label! + " Successfully Added");
             setSubmitState("Success");
             reset({
                 workout: undefined,
@@ -136,11 +146,27 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
         onClose();
     }
 
+    function getDateTime() {
+        var now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+
+        return now.toISOString().slice(0, -1);
+    }
+
+    function setMuscleGroupSelect(workoutId: number) {
+        const workoutData: WorkoutType = workouts.find(workout => workout.WorkoutNameId === workoutId)!;
+        const muscleGroup: DropdownItemType = muscleGroupOptions.find(group => group.value === workoutData.MuscleGroupId)!;
+        setValue("muscleGroup", muscleGroup);
+    }
+
     return (
         <>
             <div className="fixed top-0 left-0 right-0 flex items-center w-screen h-screen bg-gray-300/60 z-40">
                 <div className="flex items-center w-full m-2">
-                    <div className="z-50 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 mx-auto shadow-lg shadow-black rounded-lg bg-gray-700">
+                    <div className="z-50 w-full sm:w-1/2 md:w-1/3 mx-auto shadow-lg shadow-black rounded-lg bg-gray-700">
                         <div className="relative max-h-full rounded-lg">
 
                             <form method="POST" onSubmit={handleSubmit(onSubmit)}>
@@ -162,25 +188,7 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                                         <label htmlFor="workoutDate" className={labelStyles}>
                                             Date
                                         </label>
-                                        <input {...register("workoutDate")} type="date" className={inputStyles} value={getCurrentDateISOFormat()} required />
-                                    </div>
-
-                                    <div className="w-full">
-                                        <label htmlFor="muscleGroup" className={labelStyles}>
-                                            Muscle Group
-                                        </label>
-                                        <Controller name="muscleGroup" control={control} rules={{ required: true }} render={({ field }) =>
-                                            <Select {...field}
-                                                isClearable={false}
-                                                isMulti={false}
-                                                isLoading={loadingState}
-                                                options={loadingState ? [] : muscleGroupOptions}
-                                                noOptionsMessage={() => noDataFound("Muscle Groups")}
-                                                styles={dropdownStyles}
-                                                components={{ Input: props => <components.Input {...props} maxLength={50} /> }}
-                                                required
-                                            />
-                                        } />
+                                        <input {...register("workoutDate")} type="datetime-local" className={inputStyles} value={getDateTime()} required />
                                     </div>
 
                                     <div className="w-full">
@@ -197,6 +205,31 @@ export default function NewWorkoutModal({ onClose }: NewWorkoutModalProps) {
                                                 styles={dropdownStyles}
                                                 components={{ Input: props => <components.Input {...props} maxLength={50} /> }}
                                                 required
+                                                onChange={e => !isNaN(e?.value!) ? (setMuscleGroupSelect(e?.value!), setValue("workout", e!)) : setValue("workout", e!)}
+                                            />
+                                        } />
+                                    </div>
+
+                                    <div className="w-full">
+                                        <label htmlFor="muscleGroup" className={labelStyles}>
+                                            Muscle Group
+                                        </label>
+                                        <Controller name="muscleGroup" control={control} rules={{ required: true }} render={({ field }) =>
+                                            <Select {...field}
+                                                isClearable={false}
+                                                isMulti={false}
+                                                isLoading={loadingState}
+                                                options={loadingState ? [] : muscleGroupOptions}
+                                                noOptionsMessage={() => noDataFound("Muscle Groups")}
+                                                styles={dropdownStyles}
+                                                components={{ Input: props => <components.Input {...props} maxLength={50} /> }}
+                                                required
+                                                formatOptionLabel={item => (
+                                                    <div className="flex flex-row items-center">
+                                                        <Avatar src={item.image!} className="h-8 w-8 mr-2 shadow-md rounded-full" />
+                                                        <span>{item.label}</span>
+                                                    </div>
+                                                )}
                                             />
                                         } />
                                     </div>

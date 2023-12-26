@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   },
   title: {
     template: "%s | Raise the Bar",
-    default: "Raise the Bar | Weight Lifting Tracking",
+    default: "Raise the Bar | Weight Lifting Tracker",
   },
   description: "Raise the Bar",
   generator: "Next.js",
@@ -31,6 +31,8 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+        <meta name="google-signin-client_id" content="624859195499-7k5eus0o17cspl0a88dio2p67tla4tas.apps.googleusercontent.com" />
       </head>
       <body className="leading-normal tracking-normal bg-cover bg-fixed min-h-screen" suppressHydrationWarning={true}>
         <Navigation />

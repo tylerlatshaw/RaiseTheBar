@@ -1,5 +1,5 @@
-import { supabase } from "./../utilities/supabase";
-import { NewWorkoutNameType, NewWorkoutType } from "./../app/lib/type-library";
+import { supabase } from "../utilities/supabase";
+import { NewWorkoutNameType, NewWorkoutType } from "../app/lib/type-library";
 
 export async function getMuscleGroups() {
     const { data } = await supabase
@@ -23,7 +23,7 @@ export async function getWorkouts() {
     const { data } = await supabase
         .from("Workout")
         .select("WorkoutId, WorkoutNameId, MaxWeight, WorkoutDate, MuscleGroupId")
-        .order("WorkoutDate");
+        .order("WorkoutDate", { ascending: false });
 
     return data;
 }
