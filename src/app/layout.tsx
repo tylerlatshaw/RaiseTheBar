@@ -36,10 +36,12 @@ export default function RootLayout({
       </head>
       <body className="leading-normal tracking-normal bg-cover bg-fixed min-h-screen" suppressHydrationWarning={true}>
         <Navigation />
-        <main className="m-2 mt-20 md:m-0">
-          {children}
+        <main className="mt-20 mb-3 mx-3 md:mx-12 md:my-3 lg:mx-20 lg:my-3 xl:mx-30 xl:my-3 bg-white">
+          <div className="m-2">
+            {children}
+          </div>
+          <Footer />
         </main>
-        <Footer />
       </body>
     </html>
   );

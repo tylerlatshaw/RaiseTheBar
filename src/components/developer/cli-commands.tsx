@@ -20,16 +20,17 @@ export default function Page() {
             });
         });
 
-        const parsedMarkdown = await marked.parse(rawMarkdown.toString());
-        const cleanData = sanitize(parsedMarkdown);
+        const parsedMarkdown = marked.parse(rawMarkdown);
+        const cleanData = sanitize(parsedMarkdown.toString());
 
-        return cleanData;
+        return <><div dangerouslySetInnerHTML={{ __html: cleanData }}></div></>;
     }
 
     return <>
-    {
-        
-    }
-        <div dangerouslySetInnerHTML={{ __html: getMarkdown() }}></div>
+        <div className="cli-commands">
+            {
+                getMarkdown()
+            }
+        </div>
     </>;
 }

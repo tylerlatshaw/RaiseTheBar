@@ -1,4 +1,4 @@
-# Supabase CLI Configuration Commands
+## Supabase CLI Configuration Commands
 
 | Command                                             | Action                                          |
 | --------------------------------------------------- | ----------------------------------------------- |
@@ -10,7 +10,7 @@
 | `supabase migration squash --linked`                | Combine all migration scripts into one SQL file |
 | `supabase inspect db table-sizes`                   | Get sizes of each table                         |
 
-# Supabase CLI General Commands
+## Supabase CLI General Commands
 
 | Command                                             | Action                                          |
 | --------------------------------------------------- | ----------------------------------------------- |
