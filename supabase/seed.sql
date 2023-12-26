@@ -135,7 +135,9 @@ INSERT INTO "public"."MuscleGroup" ("MuscleGroupId", "DateCreated", "DateUpdated
 
 INSERT INTO "public"."WorkoutNames" ("WorkoutNameId", "DateCreated", "DateUpdated", "Name") VALUES
 	(3, '2023-12-24 16:33:12.791122+00', '2023-12-24 16:33:12.791122+00', 'Back Extension'),
-	(4, '2023-12-24 16:33:19.441157+00', '2023-12-24 16:33:19.441157+00', 'Leg Press');
+	(4, '2023-12-24 16:33:19.441157+00', '2023-12-24 16:33:19.441157+00', 'Leg Press'),
+	(5, '2023-12-24 21:27:30.79228+00', '2023-12-24 21:27:30.79228+00', 'Ab Curl'),
+	(6, '2023-12-26 03:47:24.835911+00', '2023-12-26 03:47:24.835911+00', 'New Workout');
 
 
 --
@@ -144,7 +146,10 @@ INSERT INTO "public"."WorkoutNames" ("WorkoutNameId", "DateCreated", "DateUpdate
 
 INSERT INTO "public"."Workout" ("WorkoutId", "DateCreated", "DateUpdated", "MaxWeight", "WorkoutDate", "MuscleGroupId", "WorkoutNameId") VALUES
 	(1, '2023-12-14 00:55:01.645835+00', '2023-12-24 16:36:49.802006+00', 85, '2023-12-14 00:55:01.645835+00', 2, 3),
-	(3, '2023-12-14 00:56:24.219352+00', '2023-12-24 16:36:54.711728+00', 145, '2023-12-14 00:56:13+00', 6, 4);
+	(3, '2023-12-14 00:56:24.219352+00', '2023-12-24 16:36:54.711728+00', 145, '2023-12-14 00:56:13+00', 6, 4),
+	(4, '2023-12-24 21:27:30.941938+00', '2023-12-24 21:27:30.941938+00', 50, '2023-12-24 00:00:00+00', 1, 5),
+	(5, '2023-12-26 03:46:51.389815+00', '2023-12-26 03:46:51.389815+00', 20, '2023-12-26 03:46:00+00', 6, 4),
+	(6, '2023-12-26 03:47:25.071354+00', '2023-12-26 03:47:25.071354+00', 100, '2023-12-26 03:47:00+00', 8, 6);
 
 
 --
@@ -197,14 +202,14 @@ SELECT pg_catalog.setval('"public"."MuscleGroup_MuscleGroupId_seq"', 8, true);
 -- Name: WorkoutNames_WorkoutNameId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."WorkoutNames_WorkoutNameId_seq"', 4, true);
+SELECT pg_catalog.setval('"public"."WorkoutNames_WorkoutNameId_seq"', 6, true);
 
 
 --
 -- Name: Workout_WorkoutId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('"public"."Workout_WorkoutId_seq"', 3, true);
+SELECT pg_catalog.setval('"public"."Workout_WorkoutId_seq"', 6, true);
 
 
 --
