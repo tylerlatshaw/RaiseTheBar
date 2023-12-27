@@ -1,3 +1,4 @@
+import SigninButton from "@/components/sign-in/sign-in-button";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,6 +13,8 @@ export default function Page() {
             <div className="flex w-full">
                 <h1 className="text-4xl mx-auto my-6">Sign In</h1>
             </div>
+
+            <SigninButton />
 
         </div>
     </>;

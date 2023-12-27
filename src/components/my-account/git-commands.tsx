@@ -1,18 +1,13 @@
-import { Metadata } from "next";
 import { marked } from "marked";
 import { sanitize } from "isomorphic-dompurify";
 import fs from "fs";
-
-export const metadata: Metadata = {
-    title: "Sign In",
-};
 
 export default function Page() {
 
     async function getMarkdown() {
 
         const rawMarkdown: string = await new Promise((resolve, reject) => {
-            return fs.readFile("public/static/cli-commands.md", { encoding: "utf8" }, (err, data) => {
+            return fs.readFile("src/app/lib/git-commands.md", { encoding: "utf8" }, (err, data) => {
                 if (err) {
                     return reject(err);
                 }
@@ -27,7 +22,7 @@ export default function Page() {
     }
 
     return <>
-        <div className="cli-commands">
+        <div className="cli-commands" id="markdown-div">
             {
                 getMarkdown()
             }
