@@ -12,9 +12,10 @@
 
 ## Supabase CLI General Commands
 
-| Command                                             | Action                                          |
-| --------------------------------------------------- | ----------------------------------------------- |
-| `supabase start`                                    | Start container for local                       |
-| `supabase stop`                                     | Stop container                                  |
-| `supabase db reset`                                 | Restart container                               |
-| `supabase status`                                   | Get API URLs                                    |
+| Command                                    | Action                                            |
+| ------------------------------------------ | ------------------------------------------------- |
+| `supabase start`                           | Start container for local                         |
+| `source ./supabase/.env && supabase start` | Start container (if env variables aren't loading) |
+| `supabase stop`                            | Stop container                                    |
+| `supabase db reset`                        | Restart container                                 |
+| `supabase status`                          | Get API URLs                                      |

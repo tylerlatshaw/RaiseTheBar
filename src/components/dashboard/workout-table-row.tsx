@@ -25,16 +25,16 @@ export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData
     return <>
         {
             <>
-                <td className="flex flex-col md:flex-row items-center p-2 border-b border-blue-gray-50 leading-none">
+                <td className="flex flex-col md:flex-row items-center p-2 leading-none">
                     <Avatar src={MuscleGroupImage} className="h-12 w-12 mx-1 shadow-md rounded-full" />
                     <span className="mx-2">
                         {MuscleGroupName}
                     </span>
                 </td>
-                <td className="p-2 border-b border-blue-gray-50 leading-none">
+                <td className="p-2 leading-none">
                     {workoutName}
                 </td>
-                <td className="p-2 border-b border-blue-gray-50 leading-none">
+                <td className="p-2 leading-none">
                     <span className="flex flex-col md:flex-row items-center leading-normal">
                         {MaxWeight} lbs. 
                         <span className="positive-response font-bold text-xs">
@@ -42,7 +42,7 @@ export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData
                         </span>
                     </span>
                 </td>
-                <td className="p-2 border-b border-blue-gray-50 leading-none">
+                <td className="p-2 leading-none">
                     {formattedDate}
                 </td>
             </>

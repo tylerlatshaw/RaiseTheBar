@@ -30,6 +30,11 @@ export type NavigationLinkType = {
     priority: number
 }
 
+export type MyAccountItemType = {
+    title: string,
+    content: JSX.Element,
+}
+
 export type NewWorkoutNameType = {
     name: string
 }
