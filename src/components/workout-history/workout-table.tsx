@@ -40,7 +40,7 @@ export default function Page() {
         const MuscleGroupName: string = muscleGroups.find(muscleGroups => muscleGroups.MuscleGroupId === muscleGroupId)?.Name ?? "Full Body";
         const MuscleGroupImage: string = muscleGroupImages.find(muscleGroups => muscleGroups.muscleGroup === MuscleGroupName)?.url ?? "/static/chest.png";
 
-        return {MuscleGroupName, MuscleGroupImage};
+        return { MuscleGroupName, MuscleGroupImage };
     }
 
     function getWorkoutDetails(workout: WorkoutType) {
@@ -52,8 +52,8 @@ export default function Page() {
     }
 
     return <>
-        <Card className="h-full w-full rounded">
-            <table className="w-full table-auto text-center md:text-left text-wrap bg-white/75">
+        <Card className="h-full w-full rounded-lg border border-gray-300 bg-gray-100">
+            <table className="w-full table-auto text-center md:text-left text-wrap shadow-lg">
                 <thead>
                     <tr>
                         {workoutTableHeader.map((headerItem) => (

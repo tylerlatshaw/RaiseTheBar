@@ -56,13 +56,13 @@ export default function Page() {
     }
 
     return <>
-        <Card className="h-full w-full rounded-lg">
-            <table className="w-full table-auto text-center md:text-left text-wrap bg-white/75">
+        <Card className="h-full w-full rounded-lg border border-gray-300 bg-gray-100">
+            <table className="w-full table-auto text-center md:text-left text-wrap shadow-lg">
                 <thead>
-                    <tr>
+                    <tr className="border-b border-gray-300">
                         {
                             workoutTableHeader.map((headerItem) => (
-                                <th key={headerItem} className="px-2 py-4 border-b border-blue-gray-100 bg-blue-gray-50">
+                                <th key={headerItem} className="px-2 py-4">
                                     {headerItem}
                                 </th>
                             ))
@@ -72,7 +72,7 @@ export default function Page() {
                 <tbody>
                     {
                         workouts.map((workout) => (
-                            <tr key={workout.WorkoutId} className="px-2">
+                            <tr key={workout.WorkoutId} className="px-2 border-b border-gray-300">
                                 {getWorkoutDetails(workout)}
                             </tr>
                         ))

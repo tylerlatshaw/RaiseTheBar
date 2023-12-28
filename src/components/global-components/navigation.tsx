@@ -9,7 +9,7 @@ import { mobileLinkIcons, navigationLinks } from "../../app/lib/navigation-links
 import HomeIcon from "@mui/icons-material/Home";
 import SvgIcon from "@mui/icons-material/Home";
 import { Twirl as Hamburger } from "hamburger-react";
-import { Button } from "@material-tailwind/react";
+import SigninButton from "./sign-in-button";
 
 function lookupMobileIcon(pageName: string) {
     return mobileLinkIcons.find(mobileLinkIcons => mobileLinkIcons.display === pageName)?.icon ?? HomeIcon;
@@ -35,10 +35,7 @@ export default function Navigation() {
     );
 
     const loggedInFeatureDesktop = <>
-        <Link href={"/sign-in"}>
-            <Button className="text-base font-normal tracking-normal leading-normal bg-sky-600 hover:bg-sky-700 shadow">Sign In</Button>
-        </Link>
-
+        <SigninButton />
         {/* <Avatar src={""} className="shadow-md rounded-full bg-blue-300" /> */}
     </>;
 
@@ -54,10 +51,7 @@ export default function Navigation() {
     );
 
     const loggedInFeatureMobile = <>
-        <Link href={"/sign-in"} onClick={() => { router.push("/sign-in"); setIsOpen(false); }}>
-            <button className="absolute z-50 right-0 left-0 bottom-0 m-3 p-3 text-base font-normal tracking-normal leading-normal bg-sky-600 hover:bg-sky-700 shadow shadow-slate-500 rounded">Sign In</button>
-        </Link>
-
+        <SigninButton />
         {/* <Avatar src={""} className="shadow-md rounded-full bg-blue-300" /> */}
     </>;
 
