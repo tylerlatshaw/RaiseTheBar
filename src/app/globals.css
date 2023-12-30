@@ -464,3 +464,14 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   background-color: var(--gray-100);
   font-weight: 600;
 }
+
+
+/*******************************/
+/*****
+/*****    PRIVACY POLICY 
+/*****
+/*******************************/
+
+.privacy-policy .privacy-policy-main a {
+  text-decoration: underline;
+}
