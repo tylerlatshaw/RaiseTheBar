@@ -22,7 +22,7 @@ export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
 
     let mobileMenuButtonColor = "#000000";
-    isOpen ? mobileMenuButtonColor = "#0284c7" : mobileMenuButtonColor = "#000000"; // sky-600
+    isOpen ? mobileMenuButtonColor = "#38bdf8" : mobileMenuButtonColor = "#000000"; // sky-400
 
     if (typeof document !== "undefined") {
         isOpen ? document.documentElement.style.overflow = "hidden" : document.documentElement.style.overflow = "scroll";
@@ -41,7 +41,7 @@ export default function Navigation() {
 
     const mobileMenuList = navigationLinks.map((menuItem) =>
         <div key={menuItem.display} className="mobile-menu group flex items-center w-full">
-            <li className="flex items-center w-full group-hover:text-sky-600">
+            <li className="flex items-center w-full group-hover:text-sky-400">
                 <Link key={menuItem.display} href={menuItem.link} onClick={() => { router.push(menuItem.link); setIsOpen(false); }} className="flex items-center w-full">
                     <SvgIcon component={lookupMobileIcon(menuItem.display)} className="inline-block align-middle text-4xl" />
                     <span className="inline-block align-top rounded-md px-3 py-3">{menuItem.display}</span>
@@ -57,7 +57,7 @@ export default function Navigation() {
 
     return (
         <>
-            <nav className="fixed md:relative w-full right-0 top-0 z-30 bg-white shadow px-3 py-2 md:py-0">
+            <nav className="fixed md:relative w-full right-0 top-0 z-30 bg-white shadow-lg px-3 py-2 md:py-0">
                 <div className="container mx-auto">
                     <div className="flex justify-between">
 
@@ -93,7 +93,7 @@ export default function Navigation() {
 
                 {/* Mobile menu */}
                 {isOpen ? <>
-                    <div className="w-full h-full fixed flex items-center top-0 left-0 bg-gray-900 md:hidden shadow p-3 z-40 text-white">
+                    <div className="w-full h-full fixed flex items-center top-0 left-0 bg-sky-950 md:hidden shadow p-3 z-40 text-white">
                         <div className="mobile-menu fixed block w-full p-8 text-2xl leading-none">
                             <ul className="space-y-10 w-full">
                                 {
