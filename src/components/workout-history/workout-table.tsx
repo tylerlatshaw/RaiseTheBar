@@ -43,31 +43,35 @@ export default function Page() {
         return { MuscleGroupName, MuscleGroupImage };
     }
 
-    function getWorkoutDetails(workout: WorkoutType) {
+    function getWorkoutDetails(workout: WorkoutType, isLast: boolean) {
         const muscleGroupData: MuscleGroupImageType = getMuscleGroupInformation(workout.MuscleGroupId);
 
         const workoutName = workoutNames.find((e) => e.WorkoutNameId === workout.WorkoutNameId)?.Name!;
 
-        return setWorkoutTableRow(workout, muscleGroupData, workoutName);
+        return setWorkoutTableRow(workout, muscleGroupData, workoutName, isLast);
     }
 
     return <>
-        <Card className="h-full w-full rounded-lg border border-gray-300 bg-gray-100">
-            <table className="w-full table-auto text-center md:text-left text-wrap shadow-lg">
+        <Card className="h-full w-full rounded-lg border border-gray-300">
+            <table className="w-full table-auto text-center md:text-left text-wrap shadow-lg rounded-lg">
                 <thead>
                     <tr>
-                        {workoutTableHeader.map((headerItem) => (
-                            <th key={headerItem} className="px-2 py-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                                {headerItem}
-                            </th>
-                        ))}
+                        {
+                            workoutTableHeader.map((headerItem) => (
+                                <th key={headerItem} className="px-2 py-4 bg-sky-300 border-b-4 border-sky-500 first:rounded-tl-lg last:rounded-tr-lg">
+                                    {headerItem}
+                                </th>
+                            ))
+                        }
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        workouts.map((workout) => (
-                            <tr key={workout.WorkoutId} className="px-2">
-                                {getWorkoutDetails(workout)}
+                        workouts.map((workout, index) => (
+                            <tr key={workout.WorkoutId} className="px-2 border-b border-gray-300">
+                                {
+                                    workouts[index + 1] ? getWorkoutDetails(workout, false) : getWorkoutDetails(workout, true)
+                                }
                             </tr>
                         ))
                     }

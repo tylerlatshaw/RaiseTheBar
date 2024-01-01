@@ -10,7 +10,7 @@ export const navigationLinks: NavigationLinkType[] = [
     {
         display: "Dashboard",
         link: "/",
-        filepath: "src/app/(site-pages)/page.tsx",
+        filepath: "src/app/page.tsx",
         changeFrequency: "monthly",
         priority: 1.0
     },

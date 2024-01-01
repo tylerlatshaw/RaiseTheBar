@@ -6,8 +6,7 @@ import {
 } from "../../app/lib/type-library";
 import { Avatar } from "@material-tailwind/react";
 
-export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData: MuscleGroupImageType, workoutName: string) {
-
+export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData: MuscleGroupImageType, workoutName: string, isLast: boolean) {
     const {
         MaxWeight,
         WorkoutDate,
@@ -19,26 +18,28 @@ export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData
     } = muscleGroupData;
 
     const newDate = new Date(WorkoutDate);
-    const formattedDate = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }).format(newDate);
+    const formattedDate = new Intl.DateTimeFormat("en-US", { year: "numeric", month: "numeric", day: "numeric", hour: "numeric", minute: "2-digit" }).format(newDate);
+    const cellRoundingBL = isLast ? " rounded-bl-lg" : "";
+    const cellRoundingBR = isLast ? " rounded-br-lg" : "";
 
     return <>
         {
             <>
-                <td className="table-cell md:flex md:flex-row md:items-center p-2 border-b border-blue-gray-50 leading-none">
+                <td className={"flex flex-col md:flex-row items-center p-2 leading-none bg-gray-200" + cellRoundingBL}>
                     <Avatar src={MuscleGroupImage} className="desktop-only h-6 w-6 mx-1 shadow-md rounded-full" />
                     <span className="mx-2">
                         {MuscleGroupName}
                     </span>
                 </td>
-                <td className="p-2 border-b border-blue-gray-50 leading-none">
+                <td className="p-2 leading-none bg-gray-200">
                     {workoutName}
                 </td>
-                <td className="p-2 border-b border-blue-gray-50 leading-none">
+                <td className="p-2 leading-none bg-gray-200">
                     <span className="flex flex-col leading-normal">
                         {MaxWeight} lbs.
                     </span>
                 </td>
-                <td className="p-2 border-b border-blue-gray-50 leading-none">
+                <td className={"p-2 leading-none bg-gray-200" + cellRoundingBR}>
                     {formattedDate}
                 </td>
             </>
