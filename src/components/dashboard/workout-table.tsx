@@ -55,8 +55,10 @@ export default function Page() {
         return setWorkoutTableRow(workout, muscleGroupData, workoutName, isLast);
     }
 
+    if (workouts.length === 0) { return <>Loading</>; }
+
     return <>
-        <Card className="h-full w-full rounded-lg border border-gray-300">
+        <Card className="h-full w-full rounded-lg border border-gray-300" placeholder={<></>}>
             <table className="w-full table-auto text-center md:text-left text-wrap shadow-lg rounded-lg">
                 <thead>
                     <tr>
