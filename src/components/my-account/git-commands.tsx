@@ -7,7 +7,7 @@ export default function Page() {
     async function getMarkdown() {
 
         const rawMarkdown: string = await new Promise((resolve, reject) => {
-            return fs.readFile("src/app/lib/git-commands.md", { encoding: "utf8" }, (err, data) => {
+            return fs.readFile("src/app/lib/cli-commands/git-commands.md", { encoding: "utf8" }, (err, data) => {
                 if (err) {
                     return reject(err);
                 }

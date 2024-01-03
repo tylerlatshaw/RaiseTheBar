@@ -1,6 +1,7 @@
-import { 
-    IconLookupType, 
-    NavigationLinkType 
+import {
+    FooterLinkType,
+    IconLookupType,
+    NavigationLinkType
 } from "./type-library";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
@@ -27,6 +28,21 @@ export const navigationLinks: NavigationLinkType[] = [
         filepath: "src/app/(site-pages)/workout-history/page.tsx",
         changeFrequency: "yearly",
         priority: 0.8
+    }
+];
+
+export const footerLinks: FooterLinkType[] = [
+    {
+        display: "Home",
+        link: "/"
+    },
+    {
+        display: "Privacy Policy",
+        link: "/privacy-policy"
+    },
+    {
+        display: "Sitemap",
+        link: "/sitemap"
     }
 ];
 

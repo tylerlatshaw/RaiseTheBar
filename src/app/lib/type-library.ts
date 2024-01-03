@@ -6,10 +6,9 @@ export type IconLookupType = {
     icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>
 }
 
-export type FooterSocialType = {
+export type FooterLinkType = {
     display: string,
-    link: string,
-    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>
+    link: string
 }
 
 export type MuscleGroupType = {

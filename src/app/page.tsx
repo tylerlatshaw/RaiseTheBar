@@ -1,5 +1,5 @@
 import NewWorkoutButton from "../components/dashboard/new-workout-button";
-import WorkoutTable from "../components/dashboard/workout-table";
+import WorkoutTable from "../components/dashboard/table-data";
 
 export default function Page() {
     return <>
