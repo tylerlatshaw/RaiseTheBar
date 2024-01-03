@@ -6,8 +6,9 @@ import {
 } from "react";
 import { Card } from "@material-tailwind/react";
 import axios from "axios";
-import setWorkoutTableRow from "./workout-table-row";
-import { muscleGroupImages, workoutTableHeader } from "../../app/lib/dashboard-data";
+import setWorkoutTableRow from "./table-rows";
+import { muscleGroupImages } from "../../app/lib/muscle-groups";
+import LoadingTable from "./table-loading";
 
 import type {
     MuscleGroupImageType,
@@ -22,6 +23,8 @@ export default function Page() {
     const [workoutNames, setWorkoutNames] = useState<WorkoutNameType[]>([]);
     const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
 
+    const workoutTableHeader = ["Muscle Group", "Workout", "Max Wieght", "Date"];
+
     useEffect(() => {
         axios.get("/api/get-muscle-groups").then((response) => {
             setMuscleGroups(response.data);
@@ -31,14 +34,10 @@ export default function Page() {
             setWorkoutNames(response.data);
         });
 
-        axios.get("/api/get-recent-workouts").then((response) => {
+        axios.get("/api/get-workouts").then((response) => {
             setWorkouts(response.data);
         });
     }, []);
-
-    workouts.sort((a, b) => {
-        return new Date(b.WorkoutDate).getTime() - new Date(a.WorkoutDate).getTime();
-    });
 
     function getMuscleGroupInformation(muscleGroupId: number) {
         const MuscleGroupName: string = muscleGroups.find(muscleGroups => muscleGroups.MuscleGroupId === muscleGroupId)?.Name ?? "Full Body";
@@ -55,11 +54,15 @@ export default function Page() {
         return setWorkoutTableRow(workout, muscleGroupData, workoutName, isLast);
     }
 
-    if (workouts.length === 0) { return <>Loading</>; }
+    if (workouts.length === 0) {
+        return <>
+            <LoadingTable />
+        </>;
+    }
 
     return <>
-        <Card className="h-full w-full rounded-lg border border-gray-300" placeholder={<></>}>
-            <table className="w-full table-auto text-center md:text-left text-wrap shadow-lg rounded-lg">
+        <Card className="h-full w-full rounded-lg border border-gray-300">
+            <table className="w-full text-center md:text-left text-wrap shadow-lg rounded-lg table-fixed">
                 <thead>
                     <tr>
                         {

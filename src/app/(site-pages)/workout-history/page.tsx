@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import WorkoutHistoryTable from "./../../../components/workout-history/workout-table";
+import WorkoutHistoryTable from "../../../components/workout-history/table-data";
 
 export const metadata: Metadata = {
     title: "Workout History",

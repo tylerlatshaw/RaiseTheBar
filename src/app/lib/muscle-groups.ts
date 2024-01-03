@@ -32,5 +32,3 @@ export const muscleGroupImages = [
         url: "/static/triceps.png",
     }
 ];
-
-export const workoutTableHeader = ["Muscle Group", "Workout", "Weight", "Date"];

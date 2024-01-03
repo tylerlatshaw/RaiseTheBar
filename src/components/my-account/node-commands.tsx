@@ -7,7 +7,7 @@ export default function Page() {
     async function getMarkdown() {
 
         const rawMarkdown: string = await new Promise((resolve, reject) => {
-            return fs.readFile("src/app/lib/node-commands.md", { encoding: "utf8" }, (err, data) => {
+            return fs.readFile("src/app/lib/cli-commands/node-commands.md", { encoding: "utf8" }, (err, data) => {
                 if (err) {
                     return reject(err);
                 }

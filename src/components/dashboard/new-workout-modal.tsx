@@ -30,7 +30,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { CircularProgress } from "@mui/material/";
 import { Button } from "@material-tailwind/react";
 import { Avatar } from "@material-tailwind/react";
-import { muscleGroupImages } from "@/app/lib/dashboard-data";
+import { muscleGroupImages } from "@/app/lib/muscle-groups";
 
 type SubmitState = "Idle" | "Success" | "Error";
 

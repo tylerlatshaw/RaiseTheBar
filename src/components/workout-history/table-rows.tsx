@@ -5,10 +5,8 @@ import {
     WorkoutType
 } from "../../app/lib/type-library";
 import { Avatar } from "@material-tailwind/react";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData: MuscleGroupImageType, workoutName: string, isLast: boolean) {
-
     const {
         MaxWeight,
         WorkoutDate,
@@ -27,8 +25,8 @@ export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData
     return <>
         {
             <>
-                <td className={"flex flex-col md:flex-row items-center p-2 leading-none bg-gray-200" + cellRoundingBL}>
-                    <Avatar src={MuscleGroupImage} className="h-12 w-12 mx-1 shadow-md rounded-full" placeholder={<></>} />
+                <td className={"md:flex md:flex-row items-center p-2 leading-none bg-gray-200" + cellRoundingBL}>
+                    <Avatar src={MuscleGroupImage} className="desktop-only h-6 w-6 mx-1 shadow-md rounded-full" />
                     <span className="mx-2">
                         {MuscleGroupName}
                     </span>
@@ -37,11 +35,8 @@ export default function setWorkoutTableRow(workout: WorkoutType, muscleGroupData
                     {workoutName}
                 </td>
                 <td className="p-2 leading-none bg-gray-200">
-                    <span className="flex flex-col md:flex-row items-center leading-normal">
+                    <span className="flex flex-col leading-normal">
                         {MaxWeight} lbs.
-                        <span className="positive-response font-bold text-xs">
-                            <ArrowDropUpIcon className="text-base" />15
-                        </span>
                     </span>
                 </td>
                 <td className={"p-2 leading-none bg-gray-200" + cellRoundingBR}>
