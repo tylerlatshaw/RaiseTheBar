@@ -13,6 +13,7 @@ import LoadingTable from "./table-loading";
 import type {
     MuscleGroupImageType,
     MuscleGroupType,
+    OriginalWeightsType,
     WorkoutNameType,
     WorkoutType
 } from "../../app/lib/type-library";
@@ -20,28 +21,45 @@ import type {
 export default function Page() {
 
     const [muscleGroups, setMuscleGroups] = useState<MuscleGroupType[]>([]);
+    const [originalWeights, setOriginalWeights] = useState<OriginalWeightsType[]>([]);
     const [workoutNames, setWorkoutNames] = useState<WorkoutNameType[]>([]);
     const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
 
     const workoutTableHeader = ["Muscle Group", "Workout", "Max Wieght", "Date"];
 
     useEffect(() => {
-        axios.get("/api/get-muscle-groups").then((response) => {
-            setMuscleGroups(response.data);
-        });
+        const interval = setInterval(() => {
+            axios.get("/api/get-muscle-groups").then((response) => {
+                setMuscleGroups(response.data);
+            });
 
-        axios.get("/api/get-workout-names").then((response) => {
-            setWorkoutNames(response.data);
-        });
+            axios.get("/api/get-original-weights").then((response) => {
+                setOriginalWeights(response.data);
+            });
 
-        axios.get("/api/get-recent-workouts").then((response) => {
-            setWorkouts(response.data);
-        });
+            axios.get("/api/get-recent-workouts").then((response) => {
+                setWorkouts(response.data);
+            });
+
+            axios.get("/api/get-workout-names").then((response) => {
+                setWorkoutNames(response.data);
+            });
+        }, 3000);
+
+        return () => clearInterval(interval);
     }, []);
 
     workouts.sort((a, b) => {
         return new Date(b.WorkoutDate).getTime() - new Date(a.WorkoutDate).getTime();
     });
+
+    function getWorkoutDetails(workout: WorkoutType, isLast: boolean) {
+        const muscleGroupData: MuscleGroupImageType = getMuscleGroupInformation(workout.MuscleGroupId);
+        const workoutName = workoutNames.find((e) => e.WorkoutNameId === workout.WorkoutNameId)?.Name!;
+        const netChange = calculateNetChange(workout.MaxWeight, workout.WorkoutNameId);
+
+        return setWorkoutTableRow(workout, muscleGroupData, workoutName, netChange, isLast);
+    }
 
     function getMuscleGroupInformation(muscleGroupId: number) {
         const MuscleGroupName: string = muscleGroups.find(muscleGroups => muscleGroups.MuscleGroupId === muscleGroupId)?.Name ?? "Full Body";
@@ -50,12 +68,10 @@ export default function Page() {
         return { MuscleGroupName, MuscleGroupImage };
     }
 
-    function getWorkoutDetails(workout: WorkoutType, isLast: boolean) {
-        const muscleGroupData: MuscleGroupImageType = getMuscleGroupInformation(workout.MuscleGroupId);
+    function calculateNetChange(currentWeight: number, workoutNameId: number) {
+        const netChange: number = currentWeight - originalWeights.find((e) => e.WorkoutNameId === workoutNameId)?.MaxWeight!;
 
-        const workoutName = workoutNames.find((e) => e.WorkoutNameId === workout.WorkoutNameId)?.Name!;
-
-        return setWorkoutTableRow(workout, muscleGroupData, workoutName, isLast);
+        return netChange;
     }
 
     if (workouts.length === 0) {

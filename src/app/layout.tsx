@@ -14,11 +14,22 @@ export const metadata: Metadata = {
   },
   description: "Raise the Bar",
   generator: "Next.js",
-  applicationName: "Next.js",
-  keywords: ["Next.js", "React", "JavaScript"],
+  applicationName: "Raise the Bar",
+  keywords: ["Tyler Latshaw", "Raise the Bar", "Weight Lifting"],
   authors: [{ name: "Tyler Latshaw", url: "https://tylerlatshaw.com/" }],
   creator: "Tyler J. Latshaw",
   publisher: "Tyler J. Latshaw",
+  openGraph: {
+    title: "Raise the Bar | Weight Lifting Tracker",
+    description: "Raise the Bar is a simple weight lifting tracker aimed at highlighting progress made at the gym.",
+    url: "https://gym.tylerlatshaw.com/",
+    siteName: "Raise the Bar",
+    images: [{
+      url: "https://gym.tylerlatshaw.com/static/raise-the-bar-meta-logo.svg"
+    }],
+    locale: "en_US",
+    type: "website",
+  }
 };
 
 export default function RootLayout({

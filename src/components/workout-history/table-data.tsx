@@ -39,19 +39,19 @@ export default function Page() {
         });
     }, []);
 
-    function getMuscleGroupInformation(muscleGroupId: number) {
-        const MuscleGroupName: string = muscleGroups.find(muscleGroups => muscleGroups.MuscleGroupId === muscleGroupId)?.Name ?? "Full Body";
-        const MuscleGroupImage: string = muscleGroupImages.find(muscleGroups => muscleGroups.muscleGroup === MuscleGroupName)?.url ?? "/static/chest.png";
-
-        return { MuscleGroupName, MuscleGroupImage };
-    }
-
     function getWorkoutDetails(workout: WorkoutType, isLast: boolean) {
         const muscleGroupData: MuscleGroupImageType = getMuscleGroupInformation(workout.MuscleGroupId);
 
         const workoutName = workoutNames.find((e) => e.WorkoutNameId === workout.WorkoutNameId)?.Name!;
 
         return setWorkoutTableRow(workout, muscleGroupData, workoutName, isLast);
+    }
+
+    function getMuscleGroupInformation(muscleGroupId: number) {
+        const MuscleGroupName: string = muscleGroups.find(muscleGroups => muscleGroups.MuscleGroupId === muscleGroupId)?.Name ?? "Full Body";
+        const MuscleGroupImage: string = muscleGroupImages.find(muscleGroups => muscleGroups.muscleGroup === MuscleGroupName)?.url ?? "/static/chest.png";
+
+        return { MuscleGroupName, MuscleGroupImage };
     }
 
     if (workouts.length === 0) {

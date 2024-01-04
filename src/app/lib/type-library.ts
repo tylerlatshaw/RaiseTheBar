@@ -45,6 +45,11 @@ export type NewWorkoutType = {
     muscleGroupId: number
 }
 
+export type OriginalWeightsType = {
+    WorkoutNameId: number,
+    MaxWeight: number
+}
+
 export type WorkoutNameType = {
     WorkoutNameId: number,
     Name: string
