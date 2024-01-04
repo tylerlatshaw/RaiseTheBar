@@ -3,6 +3,8 @@ import "./globals.css";
 import Navigation from "./../components/global-components/navigation";
 import Footer from "./../components/global-components/footer";
 
+const description = "Raise the Bar is a weight-lifting tracker highlighting my progress at the gym. Witness my highs, lows, and gains as I track and share my lifting progress.";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://gym.tylerlatshaw.com/"),
   alternates: {
@@ -12,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s | Raise the Bar",
     default: "Raise the Bar | Weight Lifting Tracker",
   },
-  description: "Raise the Bar",
+  description: description,
   generator: "Next.js",
   applicationName: "Raise the Bar",
   keywords: ["Tyler Latshaw", "Raise the Bar", "Weight Lifting"],
@@ -21,7 +23,7 @@ export const metadata: Metadata = {
   publisher: "Tyler J. Latshaw",
   openGraph: {
     title: "Raise the Bar | Weight Lifting Tracker",
-    description: "Raise the Bar is a simple weight lifting tracker aimed at highlighting progress made at the gym.",
+    description: description,
     url: "https://gym.tylerlatshaw.com/",
     siteName: "Raise the Bar",
     images: [{
