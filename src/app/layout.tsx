@@ -27,10 +27,17 @@ export const metadata: Metadata = {
     url: "https://gym.tylerlatshaw.com/",
     siteName: "Raise the Bar",
     images: [{
-      url: "https://gym.tylerlatshaw.com/static/raise-the-bar-meta-logo.svg"
+      url: "https://gym.tylerlatshaw.com/static/raise-the-bar-meta-logo.png"
     }],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Raise the Bar | Weight Lifting Tracker",
+    description: description,
+    creator: "@tylerlatshaw",
+    images: ["https://gym.tylerlatshaw.com/static/raise-the-bar-meta-logo.png"]
   }
 };
 
