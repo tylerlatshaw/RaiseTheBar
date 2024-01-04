@@ -9,6 +9,59 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      Key: {
+        Row: {
+          DateCreated: string
+          DateUpdated: string
+          hashed_password: string | null
+          id: number
+          user_id: string
+        }
+        Insert: {
+          DateCreated?: string
+          DateUpdated?: string
+          hashed_password?: string | null
+          id?: number
+          user_id: string
+        }
+        Update: {
+          DateCreated?: string
+          DateUpdated?: string
+          hashed_password?: string | null
+          id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Key_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "User"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      LogTable: {
+        Row: {
+          DateCreated: string
+          DateUpdated: string
+          LogTableId: number
+          WorkoutCount: number
+        }
+        Insert: {
+          DateCreated?: string
+          DateUpdated?: string
+          LogTableId?: number
+          WorkoutCount: number
+        }
+        Update: {
+          DateCreated?: string
+          DateUpdated?: string
+          LogTableId?: number
+          WorkoutCount?: number
+        }
+        Relationships: []
+      }
       MuscleGroup: {
         Row: {
           DateCreated: string
@@ -30,75 +83,142 @@ export interface Database {
         }
         Relationships: []
       }
+      Session: {
+        Row: {
+          active_expires: number
+          DateCreated: string
+          DateUpdated: string
+          id: string
+          idle_expires: number
+          user_id: string
+        }
+        Insert: {
+          active_expires: number
+          DateCreated?: string
+          DateUpdated?: string
+          id: string
+          idle_expires: number
+          user_id: string
+        }
+        Update: {
+          active_expires?: number
+          DateCreated?: string
+          DateUpdated?: string
+          id?: string
+          idle_expires?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Session_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "User"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      User: {
+        Row: {
+          DateCreated: string
+          DateUpdated: string
+          id: string
+        }
+        Insert: {
+          DateCreated?: string
+          DateUpdated?: string
+          id: string
+        }
+        Update: {
+          DateCreated?: string
+          DateUpdated?: string
+          id?: string
+        }
+        Relationships: []
+      }
       Workout: {
         Row: {
           DateCreated: string
           DateUpdated: string
           MaxWeight: number
-          Name: string
+          MuscleGroupId: number
           WorkoutDate: string
           WorkoutId: number
+          WorkoutNameId: number
         }
         Insert: {
           DateCreated?: string
           DateUpdated?: string
           MaxWeight: number
-          Name?: string
+          MuscleGroupId: number
           WorkoutDate?: string
           WorkoutId?: number
+          WorkoutNameId: number
         }
         Update: {
           DateCreated?: string
           DateUpdated?: string
           MaxWeight?: number
-          Name?: string
+          MuscleGroupId?: number
           WorkoutDate?: string
           WorkoutId?: number
-        }
-        Relationships: []
-      }
-      WorkoutToMuscleGroup: {
-        Row: {
-          DateCreated: string
-          DateUpdated: string
-          MuscleGroupId: number
-          WorkoutId: number
-          WorkoutToMuscleGroupId: number
-        }
-        Insert: {
-          DateCreated?: string
-          DateUpdated?: string
-          MuscleGroupId: number
-          WorkoutId: number
-          WorkoutToMuscleGroupId?: number
-        }
-        Update: {
-          DateCreated?: string
-          DateUpdated?: string
-          MuscleGroupId?: number
-          WorkoutId?: number
-          WorkoutToMuscleGroupId?: number
+          WorkoutNameId?: number
         }
         Relationships: [
           {
-            foreignKeyName: "WorkoutToMuscleGroup_MuscleGroupId_fkey"
+            foreignKeyName: "Workout_MuscleGroupId_fkey"
             columns: ["MuscleGroupId"]
             isOneToOne: false
             referencedRelation: "MuscleGroup"
             referencedColumns: ["MuscleGroupId"]
           },
           {
-            foreignKeyName: "WorkoutToMuscleGroup_WorkoutId_fkey"
-            columns: ["WorkoutId"]
+            foreignKeyName: "Workout_WorkoutNameId_fkey"
+            columns: ["WorkoutNameId"]
             isOneToOne: false
-            referencedRelation: "Workout"
-            referencedColumns: ["WorkoutId"]
+            referencedRelation: "WorkoutNames"
+            referencedColumns: ["WorkoutNameId"]
           }
         ]
       }
+      WorkoutNames: {
+        Row: {
+          DateCreated: string
+          DateUpdated: string
+          Name: string
+          WorkoutNameId: number
+        }
+        Insert: {
+          DateCreated?: string
+          DateUpdated?: string
+          Name: string
+          WorkoutNameId?: number
+        }
+        Update: {
+          DateCreated?: string
+          DateUpdated?: string
+          Name?: string
+          WorkoutNameId?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      OriginalWeights: {
+        Row: {
+          MaxWeight: number | null
+          WorkoutNameId: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Workout_WorkoutNameId_fkey"
+            columns: ["WorkoutNameId"]
+            isOneToOne: false
+            referencedRelation: "WorkoutNames"
+            referencedColumns: ["WorkoutNameId"]
+          }
+        ]
+      }
     }
     Functions: {
       [_ in never]: never

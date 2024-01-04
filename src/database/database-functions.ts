@@ -10,6 +10,14 @@ export async function getMuscleGroups() {
     return data;
 }
 
+export async function getOriginalWorkoutWeights() {
+    const { data } = await supabase
+        .from("OriginalWeights")
+        .select("MaxWeight, WorkoutNameId");
+
+    return data;
+}
+
 export async function getWorkoutNames() {
     const { data } = await supabase
         .from("WorkoutNames")

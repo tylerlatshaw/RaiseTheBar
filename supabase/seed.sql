@@ -107,6 +107,18 @@ SET row_security = off;
 
 
 --
+-- Data for Name: User; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: Key; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: LogTable; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -127,6 +139,12 @@ INSERT INTO "public"."MuscleGroup" ("MuscleGroupId", "DateCreated", "DateUpdated
 	(6, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Legs'),
 	(7, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Shoulders'),
 	(8, '2023-12-14 00:53:31.049157+00', '2023-12-14 00:53:31.049157+00', 'Triceps');
+
+
+--
+-- Data for Name: Session; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
 
 
 --
@@ -182,6 +200,13 @@ SELECT pg_catalog.setval('"auth"."refresh_tokens_id_seq"', 1, false);
 --
 
 SELECT pg_catalog.setval('"pgsodium"."key_key_id_seq"', 1, false);
+
+
+--
+-- Name: Key_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."Key_id_seq"', 1, false);
 
 
 --
