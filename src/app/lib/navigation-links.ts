@@ -6,6 +6,7 @@ import {
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import LoginIcon from "@mui/icons-material/Login";
 
 export const navigationLinks: NavigationLinkType[] = [
     {
@@ -28,6 +29,13 @@ export const navigationLinks: NavigationLinkType[] = [
         filepath: "src/app/(site-pages)/workout-history/page.tsx",
         changeFrequency: "yearly",
         priority: 0.8
+    },
+    {
+        display: "Sign In",
+        link: "/sign-in",
+        filepath: "src/app/(site-pages)/sign-in/page.tsx",
+        changeFrequency: "yearly",
+        priority: 0.6
     }
 ];
 
@@ -58,5 +66,9 @@ export const mobileLinkIcons: IconLookupType[] = [
     {
         display: "Workout History",
         icon: CalendarMonthIcon
+    },
+    {
+        display: "Sign In",
+        icon: LoginIcon
     }
 ];

@@ -3,19 +3,37 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import router from "next/router";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { mobileLinkIcons, navigationLinks } from "../../app/lib/navigation-links";
 import HomeIcon from "@mui/icons-material/Home";
 import SvgIcon from "@mui/icons-material/Home";
 import { Twirl as Hamburger } from "hamburger-react";
-import SigninButton from "./sign-in-button";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Avatar, Button } from "@material-tailwind/react";
+import LoginIcon from "@mui/icons-material/Login";
+import GenerateUserFlyout from "./user-menu-flyout";
 
 function lookupMobileIcon(pageName: string) {
     return mobileLinkIcons.find(mobileLinkIcons => mobileLinkIcons.display === pageName)?.icon ?? HomeIcon;
 }
 
 export default function Navigation() {
+    const router = useRouter();
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const supabase = createClientComponentClient();
+
+    useEffect(() => {
+        async function getUser() {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+            setLoading(false);
+        }
+
+        getUser();
+    });
 
     const pathname = usePathname();
 
@@ -29,15 +47,25 @@ export default function Navigation() {
     }
 
     const desktopMenuList = navigationLinks.map((menuItem) =>
-        <Link key={menuItem.display} href={menuItem.link} className={"font-medium pt-4 pb-3 px-2 no-underline hover:text-sky-600 border-b-[6px] hover:border-sky-600 text-center" + (menuItem.link === pathname ? " border-sky-600 text-sky-600" : " border-transparent")}>
-            {menuItem.display}
-        </Link>
+        menuItem.link !== "/sign-in" ? <>
+            <Link key={menuItem.display} href={menuItem.link} className={"font-medium pt-4 pb-3 px-2 no-underline hover:text-sky-600 border-b-[6px] hover:border-sky-600 text-center" + (menuItem.link === pathname ? " border-sky-600 text-sky-600" : " border-transparent")}>
+                {menuItem.display}
+            </Link>
+        </> : (
+            !user ? <>
+                <Link key={menuItem.display} href={menuItem.link} className="font-medium">
+                    <Button className="flex flex-row items-center text-base font-normal tracking-normal leading-normal bg-sky-600 hover:bg-sky-700 drop-shadow-md py-2 px-2">
+                        <span className="pl-1 pr-3 lg:px-2">
+                            <LoginIcon />
+                        </span>
+                        <span className="pr-4 hidden lg:flex normal-case">{menuItem.display}</span>
+                    </Button>
+                </Link>
+            </> : <>
+                <GenerateUserFlyout />
+            </>
+        )
     );
-
-    const loggedInFeatureDesktop = <>
-        <SigninButton />
-        {/* <Avatar src={""} className="shadow-md rounded-full bg-blue-300" /> */}
-    </>;
 
     const mobileMenuList = navigationLinks.map((menuItem) =>
         <div key={menuItem.display} className="mobile-menu group flex items-center w-full">
@@ -50,11 +78,6 @@ export default function Navigation() {
         </div>
     );
 
-    const loggedInFeatureMobile = <>
-        <SigninButton />
-        {/* <Avatar src={""} className="shadow-md rounded-full bg-blue-300" /> */}
-    </>;
-
     return (
         <>
             <nav className="fixed md:relative w-full right-0 top-0 z-30 bg-white shadow-lg px-3 py-2 md:py-0">
@@ -62,7 +85,7 @@ export default function Navigation() {
                     <div className="flex justify-between">
 
                         {/* Logo */}
-                        <div className="flex space-x-7">
+                        <div className="flex">
                             <div className="m-auto">
                                 <a className="flex items-center no-underline hover:no-underline font-bold text-2xl lg:text-3xl" href="/">
                                     {/* <span className="py-1">Weight Lifting Tracker</span> */}
@@ -75,9 +98,6 @@ export default function Navigation() {
                         <div className="desktop-only flex items-center space-x-3">
                             {
                                 desktopMenuList
-                            }
-                            {
-                                loggedInFeatureDesktop
                             }
                         </div>
 
@@ -92,20 +112,19 @@ export default function Navigation() {
                 </div>
 
                 {/* Mobile menu */}
-                {isOpen ? <>
-                    <div className="w-full h-full fixed flex items-center top-0 left-0 bg-sky-950 md:hidden shadow p-3 z-40 text-white">
-                        <div className="mobile-menu fixed block w-full p-8 text-2xl leading-none">
-                            <ul className="space-y-10 w-full">
-                                {
-                                    mobileMenuList
-                                }
-                            </ul>
+                {
+                    isOpen ? <>
+                        <div className="w-full h-full fixed flex items-center top-0 left-0 bg-sky-950 md:hidden shadow p-3 z-40 text-white">
+                            <div className="mobile-menu fixed block w-full p-8 text-2xl leading-none">
+                                <ul className="space-y-10 w-full">
+                                    {
+                                        mobileMenuList
+                                    }
+                                </ul>
+                            </div>
                         </div>
-                        {
-                            loggedInFeatureMobile
-                        }
-                    </div>
-                </> : null}
+                    </> : null
+                }
             </nav>
 
         </>
