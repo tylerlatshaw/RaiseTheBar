@@ -13,10 +13,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import type { User } from "@supabase/auth-helpers-nextjs";
+
 export default function GenerateUserFlyout() {
     const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
 
     const supabase = createClientComponentClient();
 
@@ -40,29 +41,31 @@ export default function GenerateUserFlyout() {
 
     return <>
         <div className="flex flex-col">
-
-            <Popover placement="bottom" dismiss={{ outsidePress: true, outsidePressEvent: "mousedown", referencePress: true, referencePressEvent: "pointerdown" }}>
-                <PopoverHandler>
-                    <Button className="flex items-center text-center h-12 w-12 p-0 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-md">
-                        <span className="w-full font-semibold text-2xl uppercase">TL</span>
-                    </Button>
-                </PopoverHandler>
-                <PopoverContent>
-                    <div className="text-base">
-                        <div className="flex flex-col divide-y">
-                            <Link href={"/my-account"} className="p-2 hover:text-sky-600">
-                                <HomeIcon />
-                                <span className="pl-2">My Account</span>
-                            </Link>
-                            <span onClick={handleSignOut} className="p-2 cursor-pointer hover:text-sky-600">
-                                <LogoutIcon />
-                                <span className="pl-2">Sign Out</span>
-                            </span>
-                        </div>
-                    </div>
-                </PopoverContent>
-            </Popover>
-
+            {
+                user ? <>
+                    <Popover placement="bottom" dismiss={{ outsidePress: true, outsidePressEvent: "mousedown", referencePress: true, referencePressEvent: "pointerdown" }}>
+                        <PopoverHandler>
+                            <Button className="flex items-center text-center h-12 w-12 p-0 bg-sky-600 hover:bg-sky-700 text-white rounded-full shadow-md">
+                                <span className="w-full font-semibold text-2xl uppercase">TL</span>
+                            </Button>
+                        </PopoverHandler>
+                        <PopoverContent>
+                            <div className="text-base">
+                                <div className="flex flex-col divide-y">
+                                    <Link href={"/my-account"} className="p-2 hover:text-sky-600">
+                                        <HomeIcon />
+                                        <span className="pl-2">My Account</span>
+                                    </Link>
+                                    <span onClick={handleSignOut} className="p-2 cursor-pointer hover:text-sky-600">
+                                        <LogoutIcon />
+                                        <span className="pl-2">Sign Out</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                </> : null
+            }
         </div>
     </>;
 }

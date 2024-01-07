@@ -20,9 +20,12 @@ export default function Status404() {
             </div>
 
             <div className="flex justify-center w-full mt-24 mb-8 md:mt-32 md:mb-0">
-                <Link href="/" className="drop-shadow-lg">
-                    <Button className="absolute z-50 right-0 left-0 bottom-0 m-3 p-3 text-base font-normal tracking-normal leading-normal bg-sky-600 hover:bg-sky-700 shadow shadow-slate-500 rounded" variant="contained">
-                        <>Go Back Home&nbsp;<SendIcon className="text-lg flex items-center" /></>
+                <Link href="/" className="drop-shadow-lg font-medium">
+                    <Button className="flex flex-row items-center text-base font-normal tracking-normal leading-normal bg-sky-600 hover:bg-sky-700 drop-shadow-md py-2 px-2 normal-case" variant="contained">
+                        <span>
+                            Go Back Home&nbsp;&nbsp;
+                            <SendIcon className="text-lg flex items-center" />
+                        </span>
                     </Button>
                 </Link>
             </div>

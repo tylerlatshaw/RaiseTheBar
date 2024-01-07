@@ -10,9 +10,11 @@ import HomeIcon from "@mui/icons-material/Home";
 import SvgIcon from "@mui/icons-material/Home";
 import { Twirl as Hamburger } from "hamburger-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Avatar, Button } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import LoginIcon from "@mui/icons-material/Login";
 import GenerateUserFlyout from "./user-menu-flyout";
+
+import type { User } from "@supabase/auth-helpers-nextjs";
 
 function lookupMobileIcon(pageName: string) {
     return mobileLinkIcons.find(mobileLinkIcons => mobileLinkIcons.display === pageName)?.icon ?? HomeIcon;
@@ -20,7 +22,7 @@ function lookupMobileIcon(pageName: string) {
 
 export default function Navigation() {
     const router = useRouter();
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     const supabase = createClientComponentClient();

@@ -13,11 +13,12 @@ import Link from "next/link";
 import LoadingTable from "@/components/forgot-password/loading-table";
 
 import type { ResponseClassType } from "@/app/lib/type-library";
+import type { User } from "@supabase/auth-helpers-nextjs";
 
 export default function Page() {
     const [email, setEmail] = useState("");
     const router = useRouter();
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
     const [response, setResponse] = useState("");
     const [responseClass, setResponseClass] = useState<ResponseClassType>(" hidden");
     const [loading, setLoading] = useState(true);
@@ -87,6 +88,7 @@ export default function Page() {
     };
 
     return <>
+        <meta name="robots" content="noindex,nofollow" />
         <div className="w-full xl:w-4/5 mx-auto p-2 md:p-6">
 
             <div className="flex w-full">
