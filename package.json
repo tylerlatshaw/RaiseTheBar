@@ -13,9 +13,8 @@
     "@emotion/styled": "^11.11.0",
     "@material-tailwind/react": "2.1.8",
     "@mui/icons-material": "5.15.2",
-    "@supabase/supabase-js": "2.39.2",
-    "@types/node": "20.5.9",
-    "@types/react": "18.2.21",
+    "@supabase/auth-helpers-nextjs": "^0.8.7",
+    "@supabase/supabase-js": "^2.39.2",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.14",
     "axios": "1.6.3",
@@ -36,6 +35,8 @@
     "utf-8-validate": "^6.0.3"
   },
   "devDependencies": {
+    "@types/node": "20.10.6",
+    "@types/react": "^18.2.19",
     "typescript": "5.3.3"
   }
 }
