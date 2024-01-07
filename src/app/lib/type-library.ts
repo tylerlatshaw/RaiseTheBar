@@ -50,6 +50,8 @@ export type OriginalWeightsType = {
     MaxWeight: number
 }
 
+export type ResponseClassType = " positive-response" | " negative-response" | " hidden"
+
 export type WorkoutNameType = {
     WorkoutNameId: number,
     Name: string

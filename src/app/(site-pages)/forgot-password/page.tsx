@@ -2,18 +2,24 @@
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState
+} from "react";
 import TextField from "@mui/material/TextField";
 import { Button } from "@material-tailwind/react";
-import LoginIcon from "@mui/icons-material/Login";
+import EmailIcon from "@mui/icons-material/Email";
 import Link from "next/link";
-import LoadingTable from "@/components/sign-in/loading-table";
+import LoadingTable from "@/components/forgot-password/loading-table";
+
+import type { ResponseClassType } from "@/app/lib/type-library";
 
 export default function Page() {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const router = useRouter();
     const [user, setUser] = useState(null);
+    const [response, setResponse] = useState("");
+    const [responseClass, setResponseClass] = useState<ResponseClassType>(" hidden");
     const [loading, setLoading] = useState(true);
 
     const supabase = createClientComponentClient();
@@ -28,15 +34,13 @@ export default function Page() {
         getUser();
     });
 
-    const handleSignIn = async () => {
-        const res = await supabase.auth.signInWithPassword({
-            email,
-            password,
+    const handleRequest = async () => {
+        await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${location.origin}/reset-password`,
         });
-        setUser(res.data.user);
         setEmail("");
-        setPassword("");
-        router.push("/my-account");
+        setResponse("Check your email to finish resetting your password");
+        setResponseClass(" positive-response");
     };
 
     const getForm = () => {
@@ -50,7 +54,7 @@ export default function Page() {
                 <LoadingTable />
             </>;
         }
-        
+
         return <>
             <div className="flex flex-col w-full md:w-fit space-y-6 mx-auto p-4 md:p-8 bg-gray-300 rounded shadow-md">
                 <TextField
@@ -63,31 +67,20 @@ export default function Page() {
                     variant="filled"
                     className="w-full md:w-96 bg-white"
                 />
-                <div className="flex flex-col">
-                    <TextField
-                        required
-                        label="Password"
-                        type="password"
-                        name="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        variant="filled"
-                        className="w-full md:w-96 bg-white"
-                    />
-                    <Link href={"/forgot-password"} className="w-full text-right text-gray-600 hover:text-sky-600 text-sm pt-1">Forgot Password?</Link>
-                </div>
+
+                <span className={"text-center" + responseClass}>{response}</span>
 
                 <div className="flex flex-row space-x-4 mx-auto">
-                    <Button className="flex flex-row items-center text-base font-normal tracking-normal leading-normal bg-sky-600 hover:bg-sky-700 drop-shadow-md py-2 px-2" onClick={handleSignIn}>
+                    <Button className="flex flex-row items-center text-base font-normal tracking-normal leading-normal bg-sky-600 hover:bg-sky-700 drop-shadow-md py-2 px-2" onClick={handleRequest}>
                         <span className="pl-1 pr-3 lg:px-2">
-                            <LoginIcon />
+                            <EmailIcon />
                         </span>
-                        <span className="pr-4 normal-case">Sign In</span>
+                        <span className="pr-4 normal-case">Reset Password</span>
                     </Button>
                 </div>
 
                 <span className="w-full text-center text-gray-600">
-                    Not a user? <Link href={"/sign-up"} className="hover:text-sky-600">Sign up now</Link>
+                    Already a user? <Link href={"/sign-in"} className="hover:text-sky-600">Sign in now</Link>
                 </span>
             </div>
         </>;
@@ -97,7 +90,7 @@ export default function Page() {
         <div className="w-full xl:w-4/5 mx-auto p-2 md:p-6">
 
             <div className="flex w-full">
-                <h1 className="text-4xl mx-auto my-6">Sign In</h1>
+                <h1 className="text-4xl mx-auto my-6">Forgot Passowrd</h1>
             </div>
 
             {
