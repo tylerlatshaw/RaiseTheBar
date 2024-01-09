@@ -2,19 +2,39 @@
 
 import NewWorkoutModal from "./new-workout-modal";
 import { Button } from "@material-tailwind/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
+import type { User } from "@supabase/auth-helpers-nextjs";
 
 export default function NewWorkoutButton() {
 
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [user, setUser] = useState<User | null>(null);
 
-    return (
-        <>
-            <div className="relative md:absolute md:right-0 mb-8 md:mb-0">
-                <Button onClick={() => { setShowModal(true); }} className="text-base font-normal tracking-normal leading-normal bg-sky-600 hover:bg-sky-700 shadow">New Workout</Button>
-            </div>
+    const supabase = createClientComponentClient();
 
-            {showModal ? <NewWorkoutModal onClose={() => { setShowModal(false); }} /> : null}
-        </>
-    );
+    useEffect(() => {
+        async function getUser() {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        }
+
+        getUser();
+    });
+
+    if (!user) {
+        return null;
+    } else {
+
+        return (
+            <>
+                <div className="relative md:absolute md:right-0 mb-8 md:mb-0">
+                    <Button onClick={() => { setShowModal(true); }} className="text-base font-normal tracking-normal leading-normal normal-case bg-sky-600 hover:bg-sky-700 shadow">New Workout</Button>
+                </div>
+
+                {showModal ? <NewWorkoutModal onClose={() => { setShowModal(false); }} /> : null}
+            </>
+        );
+    }
 }
