@@ -1,14 +1,56 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MyAccountItemType } from "./../../app/lib/type-library";
 import Hamburger from "hamburger-react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Status401 from "../global-components/status-401";
+import GitCommands from "./..//my-account/git-commands";
+import NetlifyCommands from "./..//my-account/netlify-commands";
+import NodeCommands from "./../my-account/node-commands";
+import SupabaseCommands from "./../my-account/supabase-commands";
 
-export default function Accordion({ items }: { items: any; }): JSX.Element {
+import type { User } from "@supabase/auth-helpers-nextjs";
+
+const accordionItems: MyAccountItemType[] = [
+    {
+        title: "Supabase Commands",
+        content: <SupabaseCommands />
+    },
+    {
+        title: "Node Commands",
+        content: <NodeCommands />
+    },
+    {
+        title: "Git Commands",
+        content: <GitCommands />
+    },
+    {
+        title: "Netlify Commands",
+        content: <NetlifyCommands />
+    }
+];
+
+export default function Accordion() {
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [activePageName, setActivePageName] = useState<string>("Supabase Commands");
     const [isOpen, setIsOpen] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    const supabase = createClientComponentClient();
+
+    useEffect(() => {
+        async function getUser() {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+            setLoading(false);
+        }
+
+        getUser();
+    });
+
 
     const handleClick = (index: number, pageName: string) => {
         setActiveIndex(index);
@@ -22,69 +64,75 @@ export default function Accordion({ items }: { items: any; }): JSX.Element {
     const mobileActiveClasses = "flex items-center w-full bg-sky-600 text-white hover:bg-sky-600 hover:text-white last:rounded-b-lg";
     const mobileInactiveClasses = "flex items-center w-full bg-gray-300 hover:bg-sky-600 hover:text-white last:rounded-b-lg";
 
-    return (
-        <>
-            <div className="flex flex-col md:flex-row w-full">
-                <div className="z-10 desktop-only flex flex-col w-full md:w-1/5">
-                    <div className="shadow-lg shadow-gray-300">
-                        {items.map((item: MyAccountItemType, index: number) => (
-                            index === activeIndex ?
-                                <>
-                                    <button key={item.title} onClick={() => handleClick(index, item.title)} className={desktopActiveClasses}>
-                                        {item.title}
-                                    </button>
-                                </> : <>
-                                    <button key={item.title} onClick={() => handleClick(index, item.title)} className={desktopInactiveClasses}>
-                                        {item.title}
-                                    </button>
-                                </>
-                        ))}
-                    </div>
-                    <div className="w-full h-full border-r-2 border-sky-600"></div>
-                </div>
-
-                <div className="mobile-only mb-6 border-2 border-sky-600 rounded-lg">
-                    <div className={"w-full pl-3 pr-1 text-left" + (isOpen ? " rounded-t-lg" : " rounded-lg")}>
-                        <span className="flex flex-row font-semibold">
-                            <div className="flex items-center basis-full">
-                                <span>Navigation</span>
-                                <span className="text-gray-500 font-light">&nbsp;/ {activePageName}</span>
+    if (!loading) {
+        if (!user) {
+            return <Status401 />;
+        } else {
+            return (
+                <>
+                    <div className="flex flex-col md:flex-row w-full">
+                        <div className="z-10 desktop-only flex flex-col w-full md:w-1/5">
+                            <div className="shadow-lg shadow-gray-300">
+                                {accordionItems.map((item: MyAccountItemType, index: number) => (
+                                    index === activeIndex ?
+                                        <>
+                                            <button key={item.title} onClick={() => handleClick(index, item.title)} className={desktopActiveClasses}>
+                                                {item.title}
+                                            </button>
+                                        </> : <>
+                                            <button key={item.title} onClick={() => handleClick(index, item.title)} className={desktopInactiveClasses}>
+                                                {item.title}
+                                            </button>
+                                        </>
+                                ))}
                             </div>
-                            <span className="flex items-center">
-                                <Hamburger toggled={isOpen} toggle={setIsOpen} size={18} rounded label="Show menu" color={isOpen ? "#0284c7" : "#000000"} hideOutline={false} />
-                            </span>
-                        </span>
+                            <div className="w-full h-full border-r-2 border-sky-600"></div>
+                        </div>
+
+                        <div className="mobile-only mb-6 border-2 border-sky-600 rounded-lg">
+                            <div className={"w-full pl-3 pr-1 text-left" + (isOpen ? " rounded-t-lg" : " rounded-lg")}>
+                                <span className="flex flex-row font-semibold">
+                                    <div className="flex items-center basis-full">
+                                        <span>Navigation</span>
+                                        <span className="text-gray-500 font-light">&nbsp;/ {activePageName}</span>
+                                    </div>
+                                    <span className="flex items-center">
+                                        <Hamburger toggled={isOpen} toggle={setIsOpen} size={18} rounded label="Show menu" color={isOpen ? "#0284c7" : "#000000"} hideOutline={false} />
+                                    </span>
+                                </span>
+                            </div>
+
+                            {isOpen ? <>
+                                {accordionItems.map((item: MyAccountItemType, index: number) => (
+                                    index === activeIndex ?
+                                        <>
+                                            <li key={item.title} className={mobileActiveClasses}>
+                                                <button className="w-full px-3 py-3" onClick={() => { handleClick(index, item.title); }}>
+                                                    {item.title}
+                                                </button>
+                                            </li>
+                                        </> : <>
+                                            <li key={item.title} className={mobileInactiveClasses}>
+                                                <button className="w-full px-3 py-3" onClick={() => { handleClick(index, item.title); }}>
+                                                    {item.title}
+                                                </button>
+                                            </li>
+                                        </>
+                                ))}
+                            </> : null}
+                        </div>
+
+                        <div className="z-20 bg-white w-full md:w-4/5 p-4 border-2 md:border-y-2 md:border-r-2 md:border-l-0 border-sky-600 rounded-lg md:rounded-l-none">
+                            {accordionItems.map((item: MyAccountItemType, index: number) => (
+                                index === activeIndex ?
+                                    <>
+                                        {item.content}
+                                    </> : null
+                            ))}
+                        </div>
                     </div>
-
-                    {isOpen ? <>
-                        {items.map((item: MyAccountItemType, index: number) => (
-                            index === activeIndex ?
-                                <>
-                                    <li key={item.title} className={mobileActiveClasses}>
-                                        <button className="w-full px-3 py-3" onClick={() => { handleClick(index, item.title); }}>
-                                            {item.title}
-                                        </button>
-                                    </li>
-                                </> : <>
-                                    <li key={item.title} className={mobileInactiveClasses}>
-                                        <button className="w-full px-3 py-3" onClick={() => { handleClick(index, item.title); }}>
-                                            {item.title}
-                                        </button>
-                                    </li>
-                                </>
-                        ))}
-                    </> : null}
-                </div>
-
-                <div className="z-20 bg-white w-full md:w-4/5 p-4 border-2 md:border-y-2 md:border-r-2 md:border-l-0 border-sky-600 rounded-lg md:rounded-l-none">
-                    {items.map((item: MyAccountItemType, index: number) => (
-                        index === activeIndex ?
-                            <>
-                                {item.content}
-                            </> : null
-                    ))}
-                </div>
-            </div>
-        </>
-    );
+                </>
+            );
+        }
+    }
 }

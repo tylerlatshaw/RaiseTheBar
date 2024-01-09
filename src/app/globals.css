@@ -447,11 +447,15 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 /*******************************/
 
 .cli-commands table {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
-.cli-commands table::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
+
+.cli-commands table::-webkit-scrollbar {
+  display: none;
+  /* Safari and Chrome */
 }
 
 .cli-commands>div {
@@ -476,6 +480,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 .cli-commands td {
   border: solid 1px black;
   padding: 4px 8px;
+  min-width: 175px;
 }
 
 .cli-commands code {
@@ -486,6 +491,19 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   border: solid 1px var(--gray-400);
   background-color: var(--gray-100);
   font-weight: 600;
+}
+
+.cli-commands p {
+  margin-top: 1rem;
+}
+
+.cli-commands a {
+  color: var(--sky-600);
+}
+
+.cli-commands a:hover {
+  color: var(--sky-700);
+  text-decoration: underline;
 }
 
 /*******************************/

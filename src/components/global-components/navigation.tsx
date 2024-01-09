@@ -56,11 +56,11 @@ export default function Navigation() {
         </> : (
             !user ? <>
                 <Link key={menuItem.display} href={menuItem.link} className="font-medium">
-                    <Button className="flex flex-row items-center text-base font-normal tracking-normal leading-normal bg-sky-600 hover:bg-sky-700 drop-shadow-md py-2 px-2">
+                    <Button className="flex flex-row items-center text-base font-normal tracking-normal leading-normal normal-case bg-sky-600 hover:bg-sky-700 drop-shadow-md py-2 px-2">
                         <span className="pl-1 pr-3 lg:px-2">
                             <LoginIcon />
                         </span>
-                        <span className="pr-4 hidden lg:flex normal-case">{menuItem.display}</span>
+                        <span className="pr-4 hidden lg:flex">{menuItem.display}</span>
                     </Button>
                 </Link>
             </> : <>
