@@ -77,7 +77,7 @@ export default function Page() {
 
         if (workouts.length === 0) {
             return <>
-                <td colSpan={4}>
+                <td colSpan={4} className="bg-gray-200">
                     <div className="flex justify-center items-center text-center w-full py-24 md:py-16">
                         {
                             NoDataFound("Workouts")
