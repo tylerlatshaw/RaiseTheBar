@@ -9,38 +9,6 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      Key: {
-        Row: {
-          DateCreated: string
-          DateUpdated: string
-          hashed_password: string | null
-          id: number
-          user_id: string
-        }
-        Insert: {
-          DateCreated?: string
-          DateUpdated?: string
-          hashed_password?: string | null
-          id?: number
-          user_id: string
-        }
-        Update: {
-          DateCreated?: string
-          DateUpdated?: string
-          hashed_password?: string | null
-          id?: number
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "Key_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "User"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       LogTable: {
         Row: {
           DateCreated: string
@@ -83,65 +51,13 @@ export interface Database {
         }
         Relationships: []
       }
-      Session: {
-        Row: {
-          active_expires: number
-          DateCreated: string
-          DateUpdated: string
-          id: string
-          idle_expires: number
-          user_id: string
-        }
-        Insert: {
-          active_expires: number
-          DateCreated?: string
-          DateUpdated?: string
-          id: string
-          idle_expires: number
-          user_id: string
-        }
-        Update: {
-          active_expires?: number
-          DateCreated?: string
-          DateUpdated?: string
-          id?: string
-          idle_expires?: number
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "Session_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "User"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      User: {
-        Row: {
-          DateCreated: string
-          DateUpdated: string
-          id: string
-        }
-        Insert: {
-          DateCreated?: string
-          DateUpdated?: string
-          id: string
-        }
-        Update: {
-          DateCreated?: string
-          DateUpdated?: string
-          id?: string
-        }
-        Relationships: []
-      }
       Workout: {
         Row: {
           DateCreated: string
           DateUpdated: string
           MaxWeight: number
           MuscleGroupId: number
+          UUID: string
           WorkoutDate: string
           WorkoutId: number
           WorkoutNameId: number
@@ -151,6 +67,7 @@ export interface Database {
           DateUpdated?: string
           MaxWeight: number
           MuscleGroupId: number
+          UUID: string
           WorkoutDate?: string
           WorkoutId?: number
           WorkoutNameId: number
@@ -160,6 +77,7 @@ export interface Database {
           DateUpdated?: string
           MaxWeight?: number
           MuscleGroupId?: number
+          UUID?: string
           WorkoutDate?: string
           WorkoutId?: number
           WorkoutNameId?: number
@@ -171,6 +89,13 @@ export interface Database {
             isOneToOne: false
             referencedRelation: "MuscleGroup"
             referencedColumns: ["MuscleGroupId"]
+          },
+          {
+            foreignKeyName: "Workout_UUID_fkey"
+            columns: ["UUID"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "Workout_WorkoutNameId_fkey"
@@ -207,9 +132,17 @@ export interface Database {
       OriginalWeights: {
         Row: {
           MaxWeight: number | null
+          UUID: string | null
           WorkoutNameId: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "Workout_UUID_fkey"
+            columns: ["UUID"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "Workout_WorkoutNameId_fkey"
             columns: ["WorkoutNameId"]

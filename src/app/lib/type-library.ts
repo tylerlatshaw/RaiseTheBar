@@ -31,7 +31,7 @@ export type NavigationLinkType = {
 
 export type MyAccountItemType = {
     title: string,
-    content: JSX.Element,
+    content: JSX.Element
 }
 
 export type NewWorkoutNameType = {
@@ -40,17 +40,27 @@ export type NewWorkoutNameType = {
 
 export type NewWorkoutType = {
     workoutNameId: number,
+    UUID: string,
     maxWeight: number,
     workoutDate: Date,
     muscleGroupId: number
 }
 
 export type OriginalWeightsType = {
+    UUID: string,
     WorkoutNameId: number,
     MaxWeight: number
 }
 
 export type ResponseClassType = " positive-response" | " negative-response" | " hidden"
+
+export type UserType = {
+    UUID: string,
+    FirstName: string,
+    LastName: string,
+    EmailAddress: string,
+    Initials: string
+}
 
 export type WorkoutNameType = {
     WorkoutNameId: number,
@@ -60,6 +70,7 @@ export type WorkoutNameType = {
 export type WorkoutType = {
     WorkoutId: number,
     WorkoutNameId: number,
+    UUID: string,
     MaxWeight: number,
     WorkoutDate: Date,
     MuscleGroupId: number

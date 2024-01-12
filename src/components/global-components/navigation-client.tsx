@@ -10,9 +10,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import SvgIcon from "@mui/icons-material/Home";
 import { Twirl as Hamburger } from "hamburger-react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Button } from "@material-tailwind/react";
-import LoginIcon from "@mui/icons-material/Login";
-import GenerateUserFlyout from "./user-menu-flyout";
+import DesktopNavigationMenu from "./navigation-desktop-menu";
 
 import type { User } from "@supabase/auth-helpers-nextjs";
 
@@ -22,16 +20,14 @@ function lookupMobileIcon(pageName: string) {
 
 export default function Navigation() {
     const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<User>();
 
     const supabase = createClientComponentClient();
 
     useEffect(() => {
         async function getUser() {
             const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
-            setLoading(false);
+            setUser(user!);
         }
 
         getUser();
@@ -47,27 +43,6 @@ export default function Navigation() {
     if (typeof document !== "undefined") {
         isOpen ? document.documentElement.style.overflow = "hidden" : document.documentElement.style.overflow = "scroll";
     }
-
-    const desktopMenuList = navigationLinks.map((menuItem) =>
-        menuItem.link !== "/sign-in" ? <>
-            <Link key={menuItem.display} href={menuItem.link} className={"font-medium pt-4 pb-3 px-2 no-underline hover:text-sky-600 border-b-[6px] hover:border-sky-600 text-center" + (menuItem.link === pathname ? " border-sky-600 text-sky-600" : " border-transparent")}>
-                {menuItem.display}
-            </Link>
-        </> : (
-            !user ? <>
-                <Link key={menuItem.display} href={menuItem.link} className="font-medium">
-                    <Button className="flex flex-row items-center text-base font-normal tracking-normal leading-normal normal-case bg-sky-600 hover:bg-sky-700 drop-shadow-md py-2 px-2">
-                        <span className="pl-1 pr-3 lg:px-2">
-                            <LoginIcon />
-                        </span>
-                        <span className="pr-4 hidden lg:flex">{menuItem.display}</span>
-                    </Button>
-                </Link>
-            </> : <>
-                <GenerateUserFlyout />
-            </>
-        )
-    );
 
     const mobileMenuList = navigationLinks.map((menuItem) =>
         <div key={menuItem.display} className="mobile-menu group flex items-center w-full">
@@ -98,9 +73,7 @@ export default function Navigation() {
 
                         {/* Navbar items */}
                         <div className="desktop-only flex items-center space-x-3">
-                            {
-                                desktopMenuList
-                            }
+                            <DesktopNavigationMenu navigationLinks={navigationLinks} pathname={pathname} user={user!} />
                         </div>
 
                         {/* Mobile menu button */}

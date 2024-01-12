@@ -27,11 +27,12 @@ export async function getWorkoutNames() {
     return data;
 }
 
-export async function getWorkouts() {
+export async function getWorkouts(UUID: string) {
     const { data } = await supabase
         .from("Workout")
-        .select("WorkoutId, WorkoutNameId, MaxWeight, WorkoutDate, MuscleGroupId")
-        .order("WorkoutDate", { ascending: false });
+        .select("WorkoutId, WorkoutNameId, UUID, MaxWeight, WorkoutDate, MuscleGroupId")
+        .order("WorkoutDate", { ascending: false })
+        .eq("UUID", UUID);
 
     return data;
 }
@@ -39,6 +40,7 @@ export async function getWorkouts() {
 export async function newWorkout(formData: NewWorkoutType) {
     const {
         workoutNameId,
+        UUID,
         maxWeight,
         workoutDate,
         muscleGroupId
@@ -48,6 +50,7 @@ export async function newWorkout(formData: NewWorkoutType) {
         .from("Workout")
         .insert({
             WorkoutNameId: workoutNameId,
+            UUID: UUID,
             MaxWeight: maxWeight,
             WorkoutDate: workoutDate,
             MuscleGroupId: muscleGroupId

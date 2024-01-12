@@ -29,7 +29,7 @@ export default function NewWorkoutButton() {
 
         return (
             <>
-                <div className="relative md:absolute md:right-0 mb-8 md:mb-0">
+                <div className="relative md:absolute md:right-0 mb-8 md:mb-0 shadow">
                     <Button onClick={() => { setShowModal(true); }} className="text-base font-normal tracking-normal leading-normal normal-case bg-sky-600 hover:bg-sky-700 shadow">New Workout</Button>
                 </div>
 

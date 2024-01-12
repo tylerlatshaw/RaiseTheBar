@@ -7,19 +7,20 @@ import { WorkoutType } from "@/app/lib/type-library";
 
 export async function GET() {
 
-    const workouts = await getWorkouts();
+    const workouts = await getWorkouts("66ccadf5-7afc-4f76-a69e-8e988d1f4b44");
     const workoutNames = await getWorkoutNames();
     const recentWorkouts: WorkoutType[] = [];
 
-    workoutNames?.map(workoutName => {
-        const toAdd = workouts?.find(workout => workout.WorkoutNameId === workoutName.WorkoutNameId);
+    workouts?.map(workout => {
+        const toAdd = workoutNames?.find(name => workout.WorkoutNameId === name.WorkoutNameId);
 
         recentWorkouts.push({
-            WorkoutId: toAdd?.WorkoutId,
+            WorkoutId: workout.WorkoutId,
+            UUID: workout.UUID,
             WorkoutNameId: toAdd?.WorkoutNameId,
-            MaxWeight: toAdd?.MaxWeight,
-            WorkoutDate: toAdd?.WorkoutDate,
-            MuscleGroupId: toAdd?.MuscleGroupId
+            MaxWeight: workout.MaxWeight,
+            WorkoutDate: workout.WorkoutDate,
+            MuscleGroupId: workout.MuscleGroupId
         });
     });
 

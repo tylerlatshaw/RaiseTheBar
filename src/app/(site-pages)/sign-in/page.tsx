@@ -18,7 +18,7 @@ export default function Page() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User>();
     const [loading, setLoading] = useState(true);
 
     const supabase = createClientComponentClient();
@@ -26,7 +26,7 @@ export default function Page() {
     useEffect(() => {
         async function getUser() {
             const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
+            setUser(user!);
             setLoading(false);
         }
 
@@ -38,7 +38,7 @@ export default function Page() {
             email,
             password,
         });
-        setUser(res.data.user);
+        setUser(res.data.user!);
         setEmail("");
         setPassword("");
         router.push("/my-account");

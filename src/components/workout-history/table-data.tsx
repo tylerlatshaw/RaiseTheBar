@@ -16,18 +16,21 @@ import type {
     WorkoutNameType,
     WorkoutType
 } from "../../app/lib/type-library";
+import NoDataFound from "../global-components/no-data-found";
 
 export default function Page() {
 
     const [muscleGroups, setMuscleGroups] = useState<MuscleGroupType[]>([]);
     const [workoutNames, setWorkoutNames] = useState<WorkoutNameType[]>([]);
     const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
+    const [loadingWorkouts, setLoadingWorkouts] = useState(true);
 
     const workoutTableHeader = ["Muscle Group", "Workout", "Max Wieght", "Date"];
 
     useEffect(() => {
         axios.get("/api/get-muscle-groups").then((response) => {
             setMuscleGroups(response.data);
+            setLoadingWorkouts(false);
         });
 
         axios.get("/api/get-workout-names").then((response) => {
@@ -54,7 +57,30 @@ export default function Page() {
         return { MuscleGroupName, MuscleGroupImage };
     }
 
-    if (workouts.length === 0) {
+    function getTableBody() {
+
+        if (workouts.length === 0) {
+            return <>
+                <td colSpan={4}>
+                    <div className="flex justify-center items-center text-center w-full py-24 md:py-16">
+                        {
+                            NoDataFound("Workouts")
+                        }
+                    </div>
+                </td>
+            </>;
+        } else {
+            return workouts.map((workout, index) => (
+                <tr key={workout.WorkoutId} className="px-2 border-b border-gray-300">
+                    {
+                        workouts[index + 1] ? getWorkoutDetails(workout, false) : getWorkoutDetails(workout, true)
+                    }
+                </tr>
+            ));
+        }
+    };
+
+    if (loadingWorkouts) {
         return <>
             <LoadingTable />
         </>;
@@ -76,13 +102,7 @@ export default function Page() {
                 </thead>
                 <tbody>
                     {
-                        workouts.map((workout, index) => (
-                            <tr key={workout.WorkoutId} className="px-2 border-b border-gray-300">
-                                {
-                                    workouts[index + 1] ? getWorkoutDetails(workout, false) : getWorkoutDetails(workout, true)
-                                }
-                            </tr>
-                        ))
+                        getTableBody()
                     }
                 </tbody>
             </table>

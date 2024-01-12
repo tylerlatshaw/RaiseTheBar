@@ -491,6 +491,8 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   border: solid 1px var(--gray-400);
   background-color: var(--gray-100);
   font-weight: 600;
+  display: inline-block;
+  width: fit-content;
 }
 
 .cli-commands p {

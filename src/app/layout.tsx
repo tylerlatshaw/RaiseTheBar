@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navigation from "./../components/global-components/navigation";
+import Navigation from "../components/global-components/navigation-client";
 import Footer from "./../components/global-components/footer";
 
 const description = "Raise the Bar is a weight-lifting tracker highlighting my progress at the gym. Witness my highs, lows, and gains as I track and share my lifting progress.";

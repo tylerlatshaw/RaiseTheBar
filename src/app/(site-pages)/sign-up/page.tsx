@@ -2,9 +2,9 @@
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { 
-    useEffect, 
-    useState 
+import {
+    useEffect,
+    useState
 } from "react";
 import TextField from "@mui/material/TextField";
 import { Button } from "@material-tailwind/react";
@@ -22,7 +22,7 @@ export default function Page() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [accessCode, setAccessCode] = useState("");
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User>();
     const [loading, setLoading] = useState(true);
     const [response, setResponse] = useState("");
     const [responseClass, setResponseClass] = useState<ResponseClassType>(" hidden");
@@ -35,7 +35,7 @@ export default function Page() {
     useEffect(() => {
         async function getUser() {
             const { data: { user } } = await supabase.auth.getUser();
-            setUser(user);
+            setUser(user!);
             setLoading(false);
         }
 
@@ -57,11 +57,13 @@ export default function Page() {
                     data: {
                         first_name: firstName,
                         last_name: lastName,
-                        display_name: firstName + " " + lastName
+                        display_name: firstName + " " + lastName,
+                        initials: firstName.charAt(0) + lastName.charAt(0)
                     }
                 }
             });
-            setUser(res.data.user);
+
+            setUser(res.data.user!);
             setResponse("Success! Check your email to finish");
             setResponseClass(" positive-response");
             setFirstName("");
